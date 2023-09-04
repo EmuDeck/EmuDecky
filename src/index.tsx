@@ -1,118 +1,63 @@
-import {
-  ButtonItem,
-  definePlugin,
-  DialogButton,
-  Menu,
-  MenuItem,
-  PanelSection,
-  PanelSectionRow,
-  Router,
-  ServerAPI,
-  showContextMenu,
-  staticClasses,
-} from "decky-frontend-lib";
-import { VFC } from "react";
+import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { getTranslateFunc } from "./TranslationsF";
-import logo from "./assets/img/steamdecklogo.png";
+// import { GlobalContext } from "./context/globalContext";
+// import React from "react";
 
-// interface AddMethodArgs {
-//   left: number;
-//   right: number;
-// }
+//
+// components
+//
+import Content from "./components/Content";
 
-const Content: VFC<{ serverAPI: ServerAPI }> = () => {
-  // const [result, setResult] = useState<number | undefined>();
+//
+// hooks
+//
 
-  // const onClick = async () => {
-  //   const result = await serverAPI.callPluginMethod<AddMethodArgs, number>(
-  //     "add",
-  //     {
-  //       left: 2,
-  //       right: 2,
-  //     }
-  //   );
-  //   if (result.success) {
-  //     setResult(result.result);
-  //   }
-  // };
-
-  return (
-    <PanelSection title="Panel Section">
-      <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={() =>
-            //onClick={(e) =>
-            showContextMenu(
-              <Menu label="Menu" cancelText="CAAAANCEL" onCancel={() => {}}>
-                <MenuItem onSelected={() => {}}>Item #1</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #2</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #3</MenuItem>
-              </Menu>
-              //e.currentTarget ?? window
-            )
-          }>
-          Server says yolo
-        </ButtonItem>
-      </PanelSectionRow>
-
-      <PanelSectionRow>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={logo} />
-        </div>
-      </PanelSectionRow>
-
-      <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={() => {
-            Router.CloseSideMenus();
-            Router.Navigate("/decky-plugin-test");
-          }}>
-          Router
-        </ButtonItem>
-      </PanelSectionRow>
-    </PanelSection>
-  );
-};
-
-const DeckyPluginRouterTest: VFC = () => {
-  return (
-    <div style={{ marginTop: "50px", color: "white" }}>
-      Hello World!
-      <DialogButton onClick={() => Router.NavigateToLibraryTab()}>Go to Library</DialogButton>
-    </div>
-  );
-};
+//
+// imports & requires
+//
+import { logo } from "./common/images";
+import configureRouter from "./router/configureRouter";
 
 export default definePlugin((serverAPI: ServerAPI) => {
-  const t = getTranslateFunc();
+  //
+  // i18
+  //
 
+  //
+  // Web services
+  //
+
+  //
+  // Const & Vars
+  //
+  const t = getTranslateFunc();
   let isFirstWatching = true;
   let isFirstUploading = true;
   let isFirstInactive = true;
   let showToast = false;
   let intervalid: any;
 
+  //
+  // Functions
+  //
+  // const getSettings = () => {
+  //   serverAPI.callPluginMethod("getSettings", {}).then((response) => {
+  //     const result: any = response.result;
+  //     const config: any = JSON.parse(result);
+  //     console.log(config);
+  //     return config;
+  //   });
+  // };
+
   const checkCloudStatus = () => {
     console.log("checkCloudStatus");
-
-    //   echo "started"
-    // elif [ ! -f "$HOME/emudeck/cloud.lock" ] && [ -f "$savesPath/.gaming" ]; then
-    //   echo "uploading"
-    // elif [ ! -f "$HOME/emudeck/cloud.lock" ] && [ ! -f "$savesPath/.gaming" ]; then
-    //   echo "finished"
-    // else
-    //  echo "disabled"
-
     serverAPI
-      .callPluginMethod("cloud_decky_check_status", { parameter_a: "Hello", parameter_b: "World" })
+      .callPluginMethod("emudeck", { command: "cloud_decky_check_status" })
       .then((response) => {
         const result = response.result;
         let bodyMessage: string = "";
-        console.log({ result });
-        console.log({ isFirstWatching }, { isFirstUploading }, { isFirstInactive });
+        // console.log({ result });
         if (result === "started" && isFirstWatching) {
           isFirstWatching = false;
           isFirstUploading = true;
@@ -162,25 +107,56 @@ export default definePlugin((serverAPI: ServerAPI) => {
       });
   };
 
-  console.log("Decky Loaded");
+  //
+  // States
+  //
 
-  intervalid = setInterval(() => {
-    checkCloudStatus();
-  }, 5000);
+  //
+  // UseEffects
+  //
 
-  serverAPI.routerHook.addRoute("/decky-plugin-test", DeckyPluginRouterTest, {
-    exact: true,
-  });
+  //
+  // Logic
+  //
+
+  // const settingsEmuDeck = getSettings();
+  const cloud_sync_status = false;
+
+  if (cloud_sync_status) {
+    intervalid = setInterval(() => {
+      checkCloudStatus();
+    }, 1000);
+  }
+
+  configureRouter(serverAPI, true);
+  //
+  // Render
+  //
+
+  //   const [statePage, setStatePage] = useState<{
+  //     settingsEmuDeck: any;
+  //     stateAPI: ServerAPI;
+  //   }>({
+  //     settingsEmuDeck: getSettings(),
+  //     stateAPI: serverAPI,
+  //   });
+  //
+  //   const { settingsEmuDeck } = statePage;
 
   return {
-    title: <div className={staticClasses.Title}>Example Plugin</div>,
+    title: <div className={staticClasses.Title}>EmuDecky</div>,
+    // content: (
+    //   <GlobalContext.Provider value={{ statePage, setStatePage }}>
+    //     <Content serverAPI={serverAPI} />
+    //   </GlobalContext.Provider>
+    // ),
     content: <Content serverAPI={serverAPI} />,
     icon: <FaCloudUploadAlt />,
     onDismount() {
       console.log("Dismount");
       console.log("Cleaning up Interval");
       clearInterval(intervalid);
-      serverAPI.routerHook.removeRoute("/decky-plugin-test");
+      configureRouter(serverAPI, false);
     },
   };
 });

@@ -2,6 +2,9 @@ import os
 import subprocess
 import time
 import asyncio
+import re
+import json
+
 
 # The decky plugin module is located at decky-loader/plugin
 # For easy intellisense checkout the decky-loader code one directory up
@@ -11,19 +14,47 @@ import decky_plugin
 
 class Plugin:
             
-    async def cloud_decky_check_status(self, parameter_a, parameter_b):
-            decky_plugin.logger.info("cloud_decky_check_status")
-            bash_command = ". /home/deck/.config/EmuDeck/backend/functions/all.sh && cloud_decky_check_status"
-            result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            decky_plugin.logger.info(result)
-            decky_plugin.logger.info(result.stdout)
-            decky_plugin.logger.info(result.stderr)
-            cleaned_stdout = result.stdout.strip()
-            return cleaned_stdout
-                
+    async def emudeck(self, command):
+        # decky_plugin.logger.info("cloud_decky_check_status")
+        bash_command = ". /home/deck/.config/EmuDeck/backend/functions/all.sh && " + command
+        result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        # decky_plugin.logger.info(result)
+        # decky_plugin.logger.info(result.stdout)
+        # decky_plugin.logger.info(result.stderr)
+        cleaned_stdout = result.stdout.strip()
+        return cleaned_stdout
+    
+    async def getSettings(self):
+        # Define a regex pattern to find lines with variables and values
+        pattern = re.compile(r'(\w+)=(\w+)')
+        
+        # Path to the configuration file
+        user_home = os.path.expanduser("~")
+        config_file_path = os.path.join(user_home, 'Emulation', 'settings.sh')
+        
+        # Create a dictionary to store variables and their values
+        configuration = {}
+        
+        # Open the configuration file and process each line
+        with open(config_file_path, 'r') as file:
+            for line in file:
+                # Search for matches in the current line
+                match = pattern.search(line)
+                if match:
+                    variable = match.group(1)
+                    value = match.group(2)
+                    configuration[variable] = value
+        
+        # Convert the dictionary into a JSON object
+        json_configuration = json.dumps(configuration, indent=4)
+        
+        # Print the resulting JSON
+        return json_configuration
+                    
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):        
-        decky_plugin.logger.info("_main!")
+        bash_command = "cd $HOME/.config/EmuDeck/backend/ && git pull"
+        result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     # Function called first during the unload process, utilize this to handle your plugin being removed
     async def _unload(self):
