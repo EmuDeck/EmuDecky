@@ -1,0 +1,5 @@
+{
+  "startWatcherBody": "CloudSync 準備完了！",
+  "uploadingWatcherBody": "アップロード中... デバイスの電源を切らないでください",
+  "exitWatcherBody": "CloudSync 完了"
+}

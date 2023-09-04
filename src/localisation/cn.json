@@ -1,0 +1,5 @@
+{
+  "startWatcherBody": "CloudSync 准备就绪！",
+  "uploadingWatcherBody": "上传中... 请勿关闭您的设备",
+  "exitWatcherBody": "CloudSync 完成"
+}

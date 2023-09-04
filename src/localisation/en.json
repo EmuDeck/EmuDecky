@@ -1,0 +1,5 @@
+{
+  "startWatcherBody": "CloudSync ready!",
+  "uploadingWatcherBody": "Uploading... don't turn off your device",
+  "exitWatcherBody": "CloudSync Completed!"
+}
