@@ -51,18 +51,22 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     },
     updating: false,
   });
+  const getData = async (update: Boolean) => {
+    await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
+      const result: any = response.result;
+      const emuDeckConfig: any = JSON.parse(result);
+      if (update) {
+        setState({ ...state, serverAPI, emuDeckConfig, updating: false });
+      } else {
+        setState({ ...state, serverAPI, emuDeckConfig });
+      }
+    });
+  };
 
   useEffect(() => {
     console.log("state change");
     if (state.emuDeckConfig.cloud_sync_status === undefined) {
-      const getData = async () => {
-        await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
-          const result: any = response.result;
-          const emuDeckConfig: any = JSON.parse(result);
-          setState({ ...state, serverAPI, emuDeckConfig });
-        });
-      };
-      getData();
+      getData(false);
     }
   }, [state]);
   const { emuDeckConfig, updating } = state;
@@ -170,7 +174,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       .then((response: any) => {
         const result: any = response.result;
         console.log({ result });
-        setState({ ...state, updating: false });
+        getData(true);
       });
   };
   //Dropdown function

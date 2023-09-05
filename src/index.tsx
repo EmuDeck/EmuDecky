@@ -49,8 +49,8 @@ export default definePlugin((serverAPI: ServerAPI) => {
       .callPluginMethod("emudeck", { command: "cloud_decky_check_status" })
       .then((response) => {
         const result = response.result;
-        let bodyMessage: string = "";
-        // console.log({ result });
+        let bodyMessage: any = "";
+        console.log({ result });
         if (result === "started" && isFirstWatching) {
           isFirstWatching = false;
           isFirstUploading = true;
@@ -75,10 +75,11 @@ export default definePlugin((serverAPI: ServerAPI) => {
         }
 
         if (result === "disabled") {
-          isFirstWatching = false;
-          isFirstUploading = false;
-          isFirstInactive = false;
-          intervalid.clearInterval();
+          isFirstWatching = true;
+          isFirstUploading = true;
+          isFirstInactive = true;
+          showToast = false;
+          bodyMessage = "disabled";
         }
 
         if (showToast) {
@@ -92,10 +93,11 @@ export default definePlugin((serverAPI: ServerAPI) => {
         bodyMessage = "";
       })
       .catch((error) => {
+        console.log({ error });
         serverAPI.toaster.toast({
           title: "EmuDeck CloudSync",
-          body: error,
-          logo: <img src={logo} />,
+          body: "error",
+          logo: <img width="20" style={{ marginTop: "8px", marginLeft: "10px" }} src={logo} />,
         });
       });
   };
