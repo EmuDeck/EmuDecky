@@ -47,7 +47,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       arDolphin: undefined,
       arSega: undefined,
       arSnes: undefined,
-      branch: "dev",
+      branch: null,
     },
     updating: false,
   });
@@ -193,7 +193,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      {branch === "early" || branch === "dev" ? (
+      {branch === "early" || branch === "dev" || branch === null ? (
         <>
           <PanelSection title={t("ControlsTitle")}>
             <PanelSectionRow>
