@@ -1,5 +1,14 @@
 {
   "startWatcherBody": "CloudSync pronto!",
-  "uploadingWatcherBody": "Caricamento... non spegnere il tuo dispositivo",
-  "exitWatcherBody": "CloudSync Completato"
+  "uploadingWatcherBody": "Caricamento... non spegnere il dispositivo",
+  "exitWatcherBody": "CloudSync completato!",
+  "ControlsTitle": "Shortcut",
+  "QuickSettingsTitle": "Impostazioni rapide",
+  "CheatsheetButton": "Apri la scheda degli shortcut",
+  "AspectRatiosTitle": "Proporzioni dell'immagine",
+  "AspectRatiosSelect": "Cambia proporzioni dell'immagine",
+  "LCDShader": "Shader LCD per dispositivi portatili",
+  "CRTShader2D": "Shader CRT per giochi 2D",
+  "CRTShader3D": "Shader CRT per giochi 3D",
+  "Bezels": "Bordi"
 }

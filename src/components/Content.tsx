@@ -12,125 +12,148 @@ import {
   Dropdown,
   DropdownOption,
   MultiDropdownOption,
+  SteamSpinner,
 } from "decky-frontend-lib";
-
+import { getTranslateFunc } from "../TranslationsF";
 import React, { VFC } from "react"; //import { GlobalContext } from "./context/globalContext";
 import { GlobalContext } from "../context/globalContext";
 import { useContext, useState, useEffect } from "react";
 
 interface DropDownList {
-  name: string;
   value: string;
+  command: string;
+  setting: string;
 }
 
 let dropDownList: DropDownList[] = [];
 
 const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   let dropdownOptions: DropdownOption[] = [];
+  const t = getTranslateFunc();
 
   // @ts-ignore
   const { serverAPI } = useContext(GlobalContext);
 
   const [state, setState] = useState({
     serverAPI: undefined,
-    config: {
+    emuDeckConfig: {
       cloud_sync_status: undefined,
       RABezels: undefined,
-      DolphinWide: undefined,
       RAHandClassic2D: undefined,
       RAHandClassic3D: undefined,
       RAHandHeldShader: undefined,
       RAautoSave: undefined,
-      SNESAR: undefined,
       arClassic3D: undefined,
       arDolphin: undefined,
       arSega: undefined,
       arSnes: undefined,
-      duckWide: undefined,
     },
     updating: false,
   });
 
   useEffect(() => {
     console.log("state change");
-    console.log({ state });
-    if (state.config.cloud_sync_status === undefined) {
+    if (state.emuDeckConfig.cloud_sync_status === undefined) {
       const getData = async () => {
         await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
           const result: any = response.result;
-          const config: any = JSON.parse(result);
-          setState({ ...state, serverAPI, config });
+          const emuDeckConfig: any = JSON.parse(result);
+          setState({ ...state, serverAPI, emuDeckConfig });
         });
       };
       getData();
     }
   }, [state]);
-  const { config, updating } = state;
-  const { cloud_sync_status, RABezels, RAHandClassic2D, RAHandClassic3D, RAHandHeldShader, RAautoSave } = config;
+  const { emuDeckConfig, updating } = state;
+  const {
+    cloud_sync_status,
+    RABezels,
+    RAHandClassic2D,
+    RAHandClassic3D,
+    RAHandHeldShader,
+    RAautoSave,
+    arClassic3D,
+    arDolphin,
+    arSega,
+    arSnes,
+  } = emuDeckConfig;
+
+  console.log({ emuDeckConfig });
 
   const listsega = [
     {
-      name: "4:3",
-      value: "ls",
+      value: "4:3",
+      command: "RetroArch_setCustomizations",
+      setting: "arSega",
     },
     {
-      name: "3:2",
-      value: "ls",
+      value: "3:2",
+      command: "RetroArch_setCustomizations",
+      setting: "arSega",
     },
   ];
   const listnintendo = [
     {
-      name: "4:3",
-      value: "ls",
+      value: "4:3",
+      command: "RetroArch_setCustomizations",
+      setting: "arSnes",
     },
     {
-      name: "8:7",
-      value: "ls",
+      value: "8:7",
+      command: "RetroArch_setCustomizations",
+      setting: "arSnes",
     },
   ];
   const listretro3D = [
     {
-      name: "4:3",
-      value: "ls",
+      value: "4:3",
+      command: "RetroArch_setCustomizations && Xemu_setCustomizations",
+      setting: "arClassic3d",
     },
     {
-      name: "16:9",
-      value: "ls",
+      value: "16:9",
+      command: "RetroArch_setCustomizations && Xemu_setCustomizations",
+      setting: "arClassic3d",
     },
   ];
   const listgc = [
     {
-      name: "4:3",
-      value: "ls",
+      value: "4:3",
+      command: "Dolphin_setCustomizations",
+      setting: "arDolphin",
     },
     {
-      name: "16:9",
-      value: "ls",
+      value: "16:9",
+      command: "Dolphin_setCustomizations",
+      setting: "arDolphin",
     },
   ];
-  const listduckstation = [
-    {
-      name: "4:3",
-      value: "ls",
-    },
-    {
-      name: "16:9",
-      value: "ls",
-    },
-  ];
+  const getAR = (system: string) => {
+    switch (system) {
+      case "169":
+        return "16:9";
+      case "43":
+        return "4:3";
+      case "87":
+        return "8:7";
+      case "32":
+        return "3:2";
+      default:
+        return "N/A";
+    }
+  };
 
   dropdownOptions.push(createSystemAR("Classic Sega Systems", listsega));
   dropdownOptions.push(createSystemAR("Classic Nintendo Systems", listnintendo));
   dropdownOptions.push(createSystemAR("Classic 3D Games", listretro3D));
   dropdownOptions.push(createSystemAR("Nintendo GameCube", listgc));
-  dropdownOptions.push(createSystemAR("Sony Playstation", listduckstation));
 
   function createSystemAR(systemName: string, list: DropDownList[]) {
     dropDownList = dropDownList.concat(list);
     return {
       label: systemName,
       options: list.map((a) => {
-        return { data: a.value, label: a.name } as SingleDropdownOption;
+        return { data: a.command, label: a.value, config: a.setting } as SingleDropdownOption;
       }),
     } as MultiDropdownOption;
   }
@@ -138,7 +161,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   const toggleFunction = (configNameValue: string, emuDeckCommand: string) => {
     setState({ ...state, updating: true });
 
-    const itemValue = config[configNameValue];
+    const itemValue = emuDeckConfig[configNameValue];
     const newValue = itemValue === "true" ? "false" : "true";
     serverAPI
       .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue} && ${emuDeckCommand}` })
@@ -149,26 +172,23 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       });
   };
   //Dropdown function
-  const setFunction = (data: any) => {
-    // const emuDeckCommand = e.data;
-    //setState({ ...state, updating: true });
-    //Decky_set_AR
-    console.log({ data });
-    // const itemValue = config[configNameValue];
-    // const newValue = itemValue === "true" ? "false" : "true";
-    // serverAPI
-    //   .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue} && ${emuDeckCommand}` })
-    //   .then((response: any) => {
-    //     const result: any = response.result;
-    //     console.log({ result });
-    //   });
-    //setState({ ...state, updating: false });
+  const setFunction = (incoming: any) => {
+    const { config, data, label } = incoming;
+
+    const newValue = label.replace(":", "");
+    console.log({ state });
+    serverAPI
+      .callPluginMethod("emudeck", { command: `setSetting ${config} ${newValue} && ${data}` })
+      .then((response: any) => {
+        const result: any = response.result;
+        console.log({ result });
+      });
   };
 
   return (
     state && (
       <>
-        <PanelSection title="Controls & Hotkeys">
+        <PanelSection title={t("QuickSettingsTitle")}>
           <PanelSectionRow>
             <ButtonItem
               layout="below"
@@ -227,23 +247,17 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
                       onSelected={() => {
                         Router.Navigate("/ps2");
                       }}>
-                      Sony PlayStation - DuckStation 2
-                    </MenuItem>
-                    <MenuItem
-                      onSelected={() => {
-                        Router.Navigate("/n3ds");
-                      }}>
-                      Nintendo
+                      Sony PlayStation 2 - PCSX22
                     </MenuItem>
                   </Menu>,
                   e.currentTarget ?? window
                 )
               }>
-              Open Cheatsheet
+              {t("CheatsheetButton")}
             </ButtonItem>
           </PanelSectionRow>
         </PanelSection>
-        <PanelSection title="Quick Settings">
+        <PanelSection title={t("QuickSettingsTitle")}>
           <PanelSectionRow>
             <ToggleField
               label="CloudSync"
@@ -264,7 +278,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </PanelSectionRow>
           <PanelSectionRow>
             <ToggleField
-              label="Bezels"
+              label={t("Bezels")}
               checked={RABezels === "true" ? true : false}
               layout="below"
               disabled={updating ? true : false}
@@ -273,7 +287,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </PanelSectionRow>
           <PanelSectionRow>
             <ToggleField
-              label="LCD Shader for handhelds"
+              label={t("LCDShader")}
               checked={RAHandHeldShader === "true" ? true : false}
               layout="below"
               disabled={updating ? true : false}
@@ -282,7 +296,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </PanelSectionRow>
           <PanelSectionRow>
             <ToggleField
-              label="CRT Shader for retro 2D games"
+              label={t("CRTShader2D")}
               checked={RAHandClassic2D === "true" ? true : false}
               layout="below"
               disabled={updating ? true : false}
@@ -291,7 +305,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </PanelSectionRow>
           <PanelSectionRow>
             <ToggleField
-              label="CRT Shader for retro 3D games"
+              label={t("CRTShader3D")}
               checked={RAHandClassic3D === "true" ? true : false}
               layout="below"
               disabled={updating ? true : false}
@@ -299,13 +313,30 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
             />
           </PanelSectionRow>
         </PanelSection>
-        <PanelSection title="Aspect Ratios">
+        <PanelSection title={t("AspectRatiosTitle")}>
           <PanelSectionRow>
+            {console.log({ arSega })}
+            {arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined ? (
+              <div>
+                <SteamSpinner />
+              </div>
+            ) : (
+              <div>
+                <p>Sega Classics: {getAR(arSega)}</p>
+                <p>Nintendo Classics: {getAR(arSnes)}</p>
+                <p>3D Classics: {getAR(arClassic3D)}</p>
+                <p>Nintendo GameCube: {getAR(arDolphin)}</p>
+              </div>
+            )}
             <Dropdown
-              strDefaultLabel="Change Aspect Ratios"
+              strDefaultLabel={t("AspectRatiosSelect")}
               rgOptions={dropdownOptions}
               selectedOption={dropdownOptions[0]}
-              disabled={updating ? true : false}
+              disabled={
+                arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined
+                  ? true
+                  : false
+              }
               onChange={(e: SingleDropdownOption) => {
                 setFunction(e);
               }}

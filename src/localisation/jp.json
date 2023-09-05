@@ -1,5 +1,14 @@
 {
-  "startWatcherBody": "CloudSync 準備完了！",
-  "uploadingWatcherBody": "アップロード中... デバイスの電源を切らないでください",
-  "exitWatcherBody": "CloudSync 完了"
+  "startWatcherBody": "CloudSyncの準備完了！",
+  "uploadingWatcherBody": "アップロード中... デバイスを切らないでください",
+  "exitWatcherBody": "CloudSyncが完了しました！",
+  "ControlsTitle": "ホットキー",
+  "QuickSettingsTitle": "クイック設定",
+  "CheatsheetButton": "チートシートを開く",
+  "AspectRatiosTitle": "画面のアスペクト比",
+  "AspectRatiosSelect": "画面のアスペクト比を変更",
+  "LCDShader": "携帯ゲーム機用のLCDシェーダー",
+  "CRTShader2D": "2Dゲーム用のCRTシェーダー",
+  "CRTShader3D": "3Dゲーム用のCRTシェーダー",
+  "Bezels": "ベゼル"
 }

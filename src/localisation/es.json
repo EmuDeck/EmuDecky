@@ -1,5 +1,14 @@
 {
   "startWatcherBody": "¡CloudSync listo!",
   "uploadingWatcherBody": "Subiendo... no apagues tu dispositivo",
-  "exitWatcherBody": "¡CloudSync completado!"
+  "exitWatcherBody": "¡CloudSync completado!",
+  "ControlsTitle": "Controles y atajos",
+  "QuickSettingsTitle": "Configuración rápida",
+  "CheatsheetButton": "Ver controles y atajos",
+  "AspectRatiosTitle": "Relaciones de aspecto",
+  "AspectRatiosSelect": "Cambiar relaciones de aspecto",
+  "LCDShader": "Shader LCD para consolas portátiles",
+  "CRTShader2D": "Shader CRT para juegos 2D",
+  "CRTShader3D": "Shader CRT para juegos 3D",
+  "Bezels": "Biseles (Bezels)"
 }

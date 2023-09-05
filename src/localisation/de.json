@@ -1,5 +1,14 @@
 {
   "startWatcherBody": "CloudSync bereit!",
-  "uploadingWatcherBody": "Hochladen... schalten Sie Ihr Gerät nicht aus",
-  "exitWatcherBody": "CloudSync Abgeschlossen"
+  "uploadingWatcherBody": "Hochladen... Gerät nicht ausschalten",
+  "exitWatcherBody": "CloudSync abgeschlossen!",
+  "ControlsTitle": "Tastenkombinationen",
+  "QuickSettingsTitle": "Schnelleinstellungen",
+  "CheatsheetButton": "Cheatsheet öffnen",
+  "AspectRatiosTitle": "Bildschirmformate",
+  "AspectRatiosSelect": "Bildschirmformate ändern",
+  "LCDShader": "LCD-Shader für Handhelds",
+  "CRTShader2D": "CRT-Shader für 2D-Spiele",
+  "CRTShader3D": "CRT-Shader für 3D-Spiele",
+  "Bezels": "Blenden"
 }

@@ -1,5 +1,14 @@
 {
   "startWatcherBody": "CloudSync prêt !",
-  "uploadingWatcherBody": "Téléchargement en cours... ne pas éteindre votre appareil",
-  "exitWatcherBody": "CloudSync Terminé"
+  "uploadingWatcherBody": "Chargement... ne pas éteindre votre appareil",
+  "exitWatcherBody": "CloudSync terminé !",
+  "ControlsTitle": "Raccourcis",
+  "QuickSettingsTitle": "Paramètres rapides",
+  "CheatsheetButton": "Ouvrir la feuille de triche",
+  "AspectRatiosTitle": "Rapports de forme",
+  "AspectRatiosSelect": "Changer les rapports de forme",
+  "LCDShader": "Shader LCD pour les consoles portables",
+  "CRTShader2D": "Shader CRT pour les jeux 2D",
+  "CRTShader3D": "Shader CRT pour les jeux 3D",
+  "Bezels": "Bords"
 }

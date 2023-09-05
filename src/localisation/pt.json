@@ -1,5 +1,14 @@
 {
   "startWatcherBody": "CloudSync pronto!",
-  "uploadingWatcherBody": "Fazendo upload... não desligue o seu dispositivo",
-  "exitWatcherBody": "CloudSync Concluído"
+  "uploadingWatcherBody": "A enviar... não desligue o dispositivo",
+  "exitWatcherBody": "CloudSync concluído!",
+  "ControlsTitle": "Atalhos",
+  "QuickSettingsTitle": "Definições Rápidas",
+  "CheatsheetButton": "Abrir Folha de Dicas",
+  "AspectRatiosTitle": "Relações de Aspecto",
+  "AspectRatiosSelect": "Alterar Relações de Aspecto",
+  "LCDShader": "Shader LCD para dispositivos portáteis",
+  "CRTShader2D": "Shader CRT para jogos 2D",
+  "CRTShader3D": "Shader CRT para jogos 3D",
+  "Bezels": "Biselas"
 }
