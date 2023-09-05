@@ -30,7 +30,7 @@ class Plugin:
         
         # Path to the configuration file
         user_home = os.path.expanduser("~")
-        config_file_path = os.path.join(user_home, 'Emulation', 'settings.sh')
+        config_file_path = os.path.join(user_home, 'emudeck', 'settings.sh')
         
         # Create a dictionary to store variables and their values
         configuration = {}
