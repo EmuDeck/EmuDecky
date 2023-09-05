@@ -44,6 +44,12 @@ class Plugin:
                     variable = match.group(1)
                     value = match.group(2)
                     configuration[variable] = value
+                    
+                    
+        bash_command = "cd $HOME/.config/EmuDeck/backend/ && git rev-parse --abbrev-ref HEAD"
+        result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        
+        configuration["branch"] = result.stdout.strip()
         
         # Convert the dictionary into a JSON object
         json_configuration = json.dumps(configuration, indent=4)

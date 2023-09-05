@@ -10,5 +10,7 @@
   "LCDShader": "手持设备LCD着色器",
   "CRTShader2D": "2D游戏CRT着色器",
   "CRTShader3D": "3D游戏CRT着色器",
-  "Bezels": "边框"
+  "Bezels": "边框",
+  "onlyEATitle": "Only Early access",
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
 }

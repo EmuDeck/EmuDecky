@@ -10,5 +10,7 @@
   "LCDShader": "Shader LCD per dispositivi portatili",
   "CRTShader2D": "Shader CRT per giochi 2D",
   "CRTShader3D": "Shader CRT per giochi 3D",
-  "Bezels": "Bordi"
+  "Bezels": "Bordi",
+  "onlyEATitle": "Only Early access",
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
 }

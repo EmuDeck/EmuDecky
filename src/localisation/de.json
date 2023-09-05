@@ -10,5 +10,7 @@
   "LCDShader": "LCD-Shader für Handhelds",
   "CRTShader2D": "CRT-Shader für 2D-Spiele",
   "CRTShader3D": "CRT-Shader für 3D-Spiele",
-  "Bezels": "Blenden"
+  "Bezels": "Blenden",
+  "onlyEATitle": "Only Early access",
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
 }

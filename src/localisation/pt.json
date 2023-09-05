@@ -10,5 +10,7 @@
   "LCDShader": "Shader LCD para dispositivos portáteis",
   "CRTShader2D": "Shader CRT para jogos 2D",
   "CRTShader3D": "Shader CRT para jogos 3D",
-  "Bezels": "Biselas"
+  "Bezels": "Biselas",
+  "onlyEATitle": "Only Early access",
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
 }

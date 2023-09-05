@@ -10,5 +10,7 @@
   "LCDShader": "携帯ゲーム機用のLCDシェーダー",
   "CRTShader2D": "2Dゲーム用のCRTシェーダー",
   "CRTShader3D": "3Dゲーム用のCRTシェーダー",
-  "Bezels": "ベゼル"
+  "Bezels": "ベゼル",
+  "onlyEATitle": "Only Early access",
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
 }
