@@ -1,9 +1,9 @@
 import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { getTranslateFunc } from "./TranslationsF";
-// import { GlobalContext } from "./context/globalContext";
-// import React from "react";
-
+//import { GlobalContext } from "./context/globalContext";
+// import { useState } from "react";
+import { GlobalContextProvider } from "./context/globalContext";
 //
 // components
 //
@@ -18,6 +18,7 @@ import Content from "./components/Content";
 //
 import { logo } from "./common/images";
 import configureRouter from "./router/configureRouter";
+// import getSettings from "./router/getSettings";
 
 export default definePlugin((serverAPI: ServerAPI) => {
   //
@@ -41,14 +42,6 @@ export default definePlugin((serverAPI: ServerAPI) => {
   //
   // Functions
   //
-  // const getSettings = () => {
-  //   serverAPI.callPluginMethod("getSettings", {}).then((response) => {
-  //     const result: any = response.result;
-  //     const config: any = JSON.parse(result);
-  //     console.log(config);
-  //     return config;
-  //   });
-  // };
 
   const checkCloudStatus = () => {
     console.log("checkCloudStatus");
@@ -111,6 +104,14 @@ export default definePlugin((serverAPI: ServerAPI) => {
   // States
   //
 
+  // const [statePage, setStatePage] = useState<{
+  //   settingsEmuDeck: any;
+  //   stateAPI: ServerAPI;
+  // }>({
+  //   settingsEmuDeck: undefined,
+  //   stateAPI: serverAPI,
+  // });
+
   //
   // UseEffects
   //
@@ -119,16 +120,22 @@ export default definePlugin((serverAPI: ServerAPI) => {
   // Logic
   //
 
-  // const settingsEmuDeck = getSettings();
-  const cloud_sync_status = false;
+  intervalid = setInterval(() => {
+    checkCloudStatus();
+  }, 2000);
 
-  if (cloud_sync_status) {
-    intervalid = setInterval(() => {
-      checkCloudStatus();
-    }, 1000);
-  }
+  // let state;
+  // const getSettings = () => {
+  //   serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
+  //     const result: any = response.result;
+  //     const config: any = JSON.parse(result);
+  //     state = { serverAPI: serverAPI, config: config };
+  //   });
+  // };
 
   configureRouter(serverAPI, true);
+  // getSettings();
+
   //
   // Render
   //
@@ -145,12 +152,12 @@ export default definePlugin((serverAPI: ServerAPI) => {
 
   return {
     title: <div className={staticClasses.Title}>EmuDecky</div>,
-    // content: (
-    //   <GlobalContext.Provider value={{ statePage, setStatePage }}>
-    //     <Content serverAPI={serverAPI} />
-    //   </GlobalContext.Provider>
-    // ),
-    content: <Content serverAPI={serverAPI} />,
+    content: (
+      <GlobalContextProvider emuchievementsState={{ serverAPI: serverAPI }}>
+        <Content serverAPI={serverAPI} />
+      </GlobalContextProvider>
+    ),
+    //content: <Content serverAPI={serverAPI} />,
     icon: <FaCloudUploadAlt />,
     onDismount() {
       console.log("Dismount");
