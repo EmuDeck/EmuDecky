@@ -12,7 +12,6 @@ import {
   Dropdown,
   DropdownOption,
   MultiDropdownOption,
-  SteamSpinner,
 } from "decky-frontend-lib";
 
 import React, { VFC } from "react"; //import { GlobalContext } from "./context/globalContext";
@@ -37,7 +36,20 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     serverAPI: undefined,
     config: {
       cloud_sync_status: undefined,
+      RABezels: undefined,
+      DolphinWide: undefined,
+      RAHandClassic2D: undefined,
+      RAHandClassic3D: undefined,
+      RAHandHeldShader: undefined,
+      RAautoSave: undefined,
+      SNESAR: undefined,
+      arClassic3D: undefined,
+      arDolphin: undefined,
+      arSega: undefined,
+      arSnes: undefined,
+      duckWide: undefined,
     },
+    updating: false,
   });
 
   useEffect(() => {
@@ -54,22 +66,8 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       getData();
     }
   }, [state]);
-  const { config } = state;
-  const {
-    cloud_sync_status,
-    RABezels,
-    DolphinWide,
-    RAHandClassic2D,
-    RAHandClassic3D,
-    RAHandHeldShader,
-    RAautoSave,
-    SNESAR,
-    arClassic3D,
-    arDolphin,
-    arSega,
-    arSnes,
-    duckWide,
-  } = config;
+  const { config, updating } = state;
+  const { cloud_sync_status, RABezels, RAHandClassic2D, RAHandClassic3D, RAHandHeldShader, RAautoSave } = config;
 
   const listsega = [
     {
@@ -137,19 +135,25 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       }),
     } as MultiDropdownOption;
   }
+  //Toggles function
+  const toggleFunction = (configNameValue, emuDeckCommand) => {
+    setState({ ...state, updating: true });
 
-  const toggleFunction = (configNameValue) => {
     const itemValue = config[configNameValue];
     const newValue = itemValue === "true" ? "false" : "true";
     serverAPI
-      .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue}` })
+      .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue} && ${emuDeckCommand}` })
       .then((response: any) => {
         const result: any = response.result;
         console.log({ result });
+        setState({ ...state, updating: false });
       });
   };
-  const setFunction = (data) => {
+  //Dropdown function
+  const setFunction = (data: any) => {
     // const emuDeckCommand = e.data;
+    //setState({ ...state, updating: true });
+    //Decky_set_AR
     console.log({ data });
     // const itemValue = config[configNameValue];
     // const newValue = itemValue === "true" ? "false" : "true";
@@ -159,6 +163,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     //     const result: any = response.result;
     //     console.log({ result });
     //   });
+    //setState({ ...state, updating: false });
   };
 
   return (
@@ -242,9 +247,19 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         <PanelSection title="Quick Settings">
           <PanelSectionRow>
             <ToggleField
+              label="CloudSync"
+              checked={cloud_sync_status === "true" ? true : false}
+              layout="below"
+              disabled={updating ? true : false}
+              onChange={() => toggleFunction("cloud_sync_status", "pwd")}
+            />
+          </PanelSectionRow>
+          <PanelSectionRow>
+            <ToggleField
               label="AutoSave"
               checked={RAautoSave === "true" ? true : false}
               layout="below"
+              disabled={updating ? true : false}
               onChange={() => toggleFunction("RAautoSave", "Decky_autoSave")}
             />
           </PanelSectionRow>
@@ -253,6 +268,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="Bezels"
               checked={RABezels === "true" ? true : false}
               layout="below"
+              disabled={updating ? true : false}
               onChange={() => toggleFunction("RABezels", "Decky_bezels")}
             />
           </PanelSectionRow>
@@ -261,6 +277,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="LCD Shader for handhelds"
               checked={RAHandHeldShader === "true" ? true : false}
               layout="below"
+              disabled={updating ? true : false}
               onChange={() => toggleFunction("RAHandHeldShader", "Decky_shaders_LCD")}
             />
           </PanelSectionRow>
@@ -269,6 +286,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 2D games"
               checked={RAHandClassic2D === "true" ? true : false}
               layout="below"
+              disabled={updating ? true : false}
               onChange={() => toggleFunction("RAHandClassic2D", "Decky_shaders_2D")}
             />
           </PanelSectionRow>
@@ -277,6 +295,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 3D games"
               checked={RAHandClassic3D === "true" ? true : false}
               layout="below"
+              disabled={updating ? true : false}
               onChange={() => toggleFunction("RAHandClassic3D", "Decky_shaders_3D")}
             />
           </PanelSectionRow>
@@ -287,6 +306,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               strDefaultLabel="Change Aspect Ratios"
               rgOptions={dropdownOptions}
               selectedOption={dropdownOptions[0]}
+              disabled={updating ? true : false}
               onChange={(e: SingleDropdownOption) => {
                 setFunction(e);
               }}
