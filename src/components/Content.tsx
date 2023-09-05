@@ -83,36 +83,36 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   const listsega = [
     {
       value: "4:3",
-      command: "RetroArch_setCustomizations",
+      command: "Decky_setAR",
       setting: "arSega",
     },
     {
       value: "3:2",
-      command: "RetroArch_setCustomizations",
+      command: "Decky_setAR",
       setting: "arSega",
     },
   ];
   const listnintendo = [
     {
       value: "4:3",
-      command: "RetroArch_setCustomizations",
+      command: "Decky_setAR",
       setting: "arSnes",
     },
     {
       value: "8:7",
-      command: "RetroArch_setCustomizations",
+      command: "Decky_setAR",
       setting: "arSnes",
     },
   ];
   const listretro3D = [
     {
       value: "4:3",
-      command: "RetroArch_setCustomizations && Xemu_setCustomizations",
+      command: "Decky_setAR",
       setting: "arClassic3d",
     },
     {
       value: "16:9",
-      command: "RetroArch_setCustomizations && Xemu_setCustomizations",
+      command: "Decky_setAR",
       setting: "arClassic3d",
     },
   ];
