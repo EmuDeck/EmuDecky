@@ -28,8 +28,7 @@ let dropDownList: DropDownList[] = [];
 const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   let dropdownOptions: DropdownOption[] = [];
 
-  // const { emuchievementsState } = useContext(GlobalContext);
-
+  // @ts-ignore
   const { serverAPI } = useContext(GlobalContext);
 
   const [state, setState] = useState({
@@ -60,7 +59,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
           const result: any = response.result;
           const config: any = JSON.parse(result);
-          setState({ serverAPI, config });
+          setState({ ...state, serverAPI, config });
         });
       };
       getData();
@@ -136,7 +135,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     } as MultiDropdownOption;
   }
   //Toggles function
-  const toggleFunction = (configNameValue, emuDeckCommand) => {
+  const toggleFunction = (configNameValue: string, emuDeckCommand: string) => {
     setState({ ...state, updating: true });
 
     const itemValue = config[configNameValue];

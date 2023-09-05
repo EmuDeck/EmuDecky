@@ -153,7 +153,7 @@ export default definePlugin((serverAPI: ServerAPI) => {
   return {
     title: <div className={staticClasses.Title}>EmuDecky</div>,
     content: (
-      <GlobalContextProvider emuchievementsState={{ serverAPI: serverAPI }}>
+      <GlobalContextProvider emuDeckState={{ serverAPI: serverAPI }}>
         <Content serverAPI={serverAPI} />
       </GlobalContextProvider>
     ),
