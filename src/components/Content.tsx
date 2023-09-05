@@ -71,6 +71,73 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     duckWide,
   } = config;
 
+  const listsega = [
+    {
+      name: "4:3",
+      value: "ls",
+    },
+    {
+      name: "3:2",
+      value: "ls",
+    },
+  ];
+  const listnintendo = [
+    {
+      name: "4:3",
+      value: "ls",
+    },
+    {
+      name: "8:7",
+      value: "ls",
+    },
+  ];
+  const listretro3D = [
+    {
+      name: "4:3",
+      value: "ls",
+    },
+    {
+      name: "16:9",
+      value: "ls",
+    },
+  ];
+  const listgc = [
+    {
+      name: "4:3",
+      value: "ls",
+    },
+    {
+      name: "16:9",
+      value: "ls",
+    },
+  ];
+  const listduckstation = [
+    {
+      name: "4:3",
+      value: "ls",
+    },
+    {
+      name: "16:9",
+      value: "ls",
+    },
+  ];
+
+  dropdownOptions.push(createSystemAR("Classic Sega Systems", listsega));
+  dropdownOptions.push(createSystemAR("Classic Nintendo Systems", listnintendo));
+  dropdownOptions.push(createSystemAR("Classic 3D Games", listretro3D));
+  dropdownOptions.push(createSystemAR("Nintendo GameCube", listgc));
+  dropdownOptions.push(createSystemAR("Sony Playstation", listduckstation));
+
+  function createSystemAR(systemName: string, list: DropDownList[]) {
+    dropDownList = dropDownList.concat(list);
+    return {
+      label: systemName,
+      options: list.map((a) => {
+        return { data: a.value, label: a.name } as SingleDropdownOption;
+      }),
+    } as MultiDropdownOption;
+  }
+
   const toggleFunction = (configNameValue) => {
     const itemValue = config[configNameValue];
     const newValue = itemValue === "true" ? "false" : "true";
@@ -80,6 +147,18 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         const result: any = response.result;
         console.log({ result });
       });
+  };
+  const setFunction = (data) => {
+    // const emuDeckCommand = e.data;
+    console.log({ data });
+    // const itemValue = config[configNameValue];
+    // const newValue = itemValue === "true" ? "false" : "true";
+    // serverAPI
+    //   .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue} && ${emuDeckCommand}` })
+    //   .then((response: any) => {
+    //     const result: any = response.result;
+    //     console.log({ result });
+    //   });
   };
 
   return (
@@ -166,7 +245,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="AutoSave"
               checked={RAautoSave === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("RAautoSave")}
+              onChange={() => toggleFunction("RAautoSave", "Decky_autoSave")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -174,7 +253,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="Bezels"
               checked={RABezels === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("RABezels")}
+              onChange={() => toggleFunction("RABezels", "Decky_bezels")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -182,7 +261,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="LCD Shader for handhelds"
               checked={RAHandHeldShader === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("RAHandHeldShader")}
+              onChange={() => toggleFunction("RAHandHeldShader", "Decky_shaders_LCD")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -190,7 +269,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 2D games"
               checked={RAHandClassic2D === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("RAHandClassic2D")}
+              onChange={() => toggleFunction("RAHandClassic2D", "Decky_shaders_2D")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -198,7 +277,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 3D games"
               checked={RAHandClassic3D === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("RAHandClassic3D")}
+              onChange={() => toggleFunction("RAHandClassic3D", "Decky_shaders_3D")}
             />
           </PanelSectionRow>
         </PanelSection>
@@ -209,9 +288,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               rgOptions={dropdownOptions}
               selectedOption={dropdownOptions[0]}
               onChange={(e: SingleDropdownOption) => {
-                const emuDeckCommand = e.data;
-                console.log({ emuDeckCommand });
-                //executa(emuDeckCommand);
+                setFunction(e);
               }}
             />
           </PanelSectionRow>

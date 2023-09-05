@@ -53,7 +53,7 @@ class Plugin:
                     
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):        
-        bash_command = "cd $HOME/.config/EmuDeck/backend/ && git pull"
+        bash_command = "cd $HOME/.config/EmuDeck/backend/ && git reset --hard && git pull"
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     # Function called first during the unload process, utilize this to handle your plugin being removed
