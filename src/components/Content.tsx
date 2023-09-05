@@ -188,7 +188,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   return (
     state && (
       <>
-        <PanelSection title={t("QuickSettingsTitle")}>
+        <PanelSection title={t("ControlsTitle")}>
           <PanelSectionRow>
             <ButtonItem
               layout="below"
