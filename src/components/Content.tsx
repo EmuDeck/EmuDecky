@@ -42,6 +42,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   useEffect(() => {
     console.log("state change");
+    console.log({ state });
     if (state.config.cloud_sync_status === undefined) {
       const getData = async () => {
         await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
@@ -53,7 +54,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       getData();
     }
   }, [state]);
-
+  const { config } = state;
   const {
     cloud_sync_status,
     RABezels,
@@ -68,9 +69,18 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     arSega,
     arSnes,
     duckWide,
-  } = state.config;
-  console.log({ state });
-  console.log({ cloud_sync_status });
+  } = config;
+
+  const toggleFunction = (configNameValue) => {
+    const itemValue = config[configNameValue];
+    const newValue = itemValue === "true" ? "false" : "true";
+    serverAPI
+      .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue}` })
+      .then((response: any) => {
+        const result: any = response.result;
+        console.log({ result });
+      });
+  };
 
   return (
     state && (
@@ -156,7 +166,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="AutoSave"
               checked={RAautoSave === "true" ? true : false}
               layout="below"
-              onChange={() => toggleFunction("AutoSave")}
+              onChange={() => toggleFunction("RAautoSave")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -172,7 +182,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="LCD Shader for handhelds"
               checked={RAHandHeldShader === "true" ? true : false}
               layout="below"
-              onChange={() => console.log("pepe")}
+              onChange={() => toggleFunction("RAHandHeldShader")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -180,7 +190,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 2D games"
               checked={RAHandClassic2D === "true" ? true : false}
               layout="below"
-              onChange={() => console.log("pepe")}
+              onChange={() => toggleFunction("RAHandClassic2D")}
             />
           </PanelSectionRow>
           <PanelSectionRow>
@@ -188,7 +198,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               label="CRT Shader for retro 3D games"
               checked={RAHandClassic3D === "true" ? true : false}
               layout="below"
-              onChange={() => console.log("pepe")}
+              onChange={() => toggleFunction("RAHandClassic3D")}
             />
           </PanelSectionRow>
         </PanelSection>
