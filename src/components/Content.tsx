@@ -47,7 +47,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       arDolphin: undefined,
       arSega: undefined,
       arSnes: undefined,
-      branch: undefined,
+      branch: "dev",
     },
     updating: false,
   });
