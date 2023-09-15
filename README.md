@@ -1,8 +1,5 @@
-# EmuDecky EA 1.0.0
+# EmuDecky 1.0.0
 
-**Only for Early Access users ( for now )**
+You can use this Decky Loader plugin to check EmuDeck's hotkeys and manage EmuDeck Quick Settings, more features will be added soon
 
-Decky Loader plugin to manage EmuDeck CloudSync and Quick Settings
-
-
-<img src="https://github.com/EmuDeck/EmuDecky/assets/6368050/829eca6b-f2b1-452d-b6d9-89342e19617d" alt="alt text" width="400">
+<img src="https://c10.patreonusercontent.com/4/patreon-media/p/post/89014991/af8724d259424779828805cb85278224/eyJ3Ijo2MjB9/1.png?token-time=1696032000&token-hash=UUd5UUeVjkKvylAH7u3uEHJO6tgwTqdFQ30Uv4S6hkY%3D" alt="alt text" width="400">
