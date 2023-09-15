@@ -193,169 +193,165 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      {branch === "early" || branch === "dev" || branch === null ? (
-        <>
-          <PanelSection title={t("ControlsTitle")}>
-            <PanelSectionRow>
-              <ButtonItem
-                layout="below"
-                onClick={(e: any) =>
-                  showContextMenu(
-                    <Menu label="Menu" cancelText="Cancel" onCancel={() => {}}>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/retroarch-hotkeys");
-                        }}>
-                        Retro Systems, Dreamcast, N64, Saturn, etc.
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/n3ds");
-                        }}>
-                        Nintendo 3DS - Citra
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/gamecube");
-                        }}>
-                        Nintendo GameCube - Dolphin
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/wii");
-                        }}>
-                        Nintendo Wii - Dolphin
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/wiiu");
-                        }}>
-                        Nintendo Wii U - Cemu
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/yuzu");
-                        }}>
-                        Nintendo Switch - Yuzu
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/primehack");
-                        }}>
-                        PrimeHack
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/duckstation");
-                        }}>
-                        Sony PlayStation - DuckStation
-                      </MenuItem>
-                      <MenuItem
-                        onSelected={() => {
-                          Router.Navigate("/ps2");
-                        }}>
-                        Sony PlayStation 2 - PCSX22
-                      </MenuItem>
-                    </Menu>,
-                    e.currentTarget ?? window
-                  )
-                }>
-                {t("CheatsheetButton")}
-              </ButtonItem>
-            </PanelSectionRow>
-          </PanelSection>
-          <PanelSection title={t("QuickSettingsTitle")}>
-            <PanelSectionRow>
-              <ToggleField
-                label="CloudSync"
-                checked={cloud_sync_status === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("cloud_sync_status", "pwd")}
-              />
-            </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label="AutoSave"
-                checked={RAautoSave === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("RAautoSave", "Decky_autoSave")}
-              />
-            </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label={t("Bezels")}
-                checked={RABezels === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("RABezels", "Decky_bezels")}
-              />
-            </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label={t("LCDShader")}
-                checked={RAHandHeldShader === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("RAHandHeldShader", "Decky_shaders_LCD")}
-              />
-            </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label={t("CRTShader2D")}
-                checked={RAHandClassic2D === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("RAHandClassic2D", "Decky_shaders_2D")}
-              />
-            </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label={t("CRTShader3D")}
-                checked={RAHandClassic3D === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("RAHandClassic3D", "Decky_shaders_3D")}
-              />
-            </PanelSectionRow>
-          </PanelSection>
-          <PanelSection title={t("AspectRatiosTitle")}>
-            <PanelSectionRow>
-              {console.log({ arSega })}
-              {arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined ? (
-                <div>
-                  <SteamSpinner />
-                </div>
-              ) : (
-                <div>
-                  <p>Sega Classics: {getAR(arSega)}</p>
-                  <p>Nintendo Classics: {getAR(arSnes)}</p>
-                  <p>3D Classics: {getAR(arClassic3D)}</p>
-                  <p>Nintendo GameCube: {getAR(arDolphin)}</p>
-                </div>
-              )}
-              <Dropdown
-                strDefaultLabel={t("AspectRatiosSelect")}
-                rgOptions={dropdownOptions}
-                selectedOption={dropdownOptions[0]}
-                disabled={
-                  arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined
-                    ? true
-                    : false
-                }
-                onChange={(e: SingleDropdownOption) => {
-                  setFunction(e);
-                }}
-              />
-            </PanelSectionRow>
-          </PanelSection>
-        </>
-      ) : (
-        <PanelSection title={t("onlyEATitle")}>
-          <PanelSectionRow>{t("onlyEA")}</PanelSectionRow>
-        </PanelSection>
-      )}
+      <PanelSection title={t("ControlsTitle")}>
+        <PanelSectionRow>
+          <ButtonItem
+            layout="below"
+            onClick={(e: any) =>
+              showContextMenu(
+                <Menu label="Menu" cancelText="Cancel" onCancel={() => {}}>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/retroarch-hotkeys");
+                    }}>
+                    Retro Systems, Dreamcast, N64, Saturn, etc.
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/n3ds");
+                    }}>
+                    Nintendo 3DS - Citra
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/gamecube");
+                    }}>
+                    Nintendo GameCube - Dolphin
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/wii");
+                    }}>
+                    Nintendo Wii - Dolphin
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/wiiu");
+                    }}>
+                    Nintendo Wii U - Cemu
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/yuzu");
+                    }}>
+                    Nintendo Switch - Yuzu
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/primehack");
+                    }}>
+                    PrimeHack
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/duckstation");
+                    }}>
+                    Sony PlayStation - DuckStation
+                  </MenuItem>
+                  <MenuItem
+                    onSelected={() => {
+                      Router.Navigate("/ps2");
+                    }}>
+                    Sony PlayStation 2 - PCSX22
+                  </MenuItem>
+                </Menu>,
+                e.currentTarget ?? window
+              )
+            }>
+            {t("CheatsheetButton")}
+          </ButtonItem>
+        </PanelSectionRow>
+      </PanelSection>
+      <PanelSection title={t("QuickSettingsTitle")}>
+        {branch === "early" || branch === "dev" || branch === null ? (
+          <PanelSectionRow>
+            <ToggleField
+              label="CloudSync"
+              checked={cloud_sync_status === "true" ? true : false}
+              layout="below"
+              disabled={updating ? true : false}
+              onChange={() => toggleFunction("cloud_sync_status", "pwd")}
+            />
+          </PanelSectionRow>
+        ) : (
+          ""
+        )}
+        <PanelSectionRow>
+          <ToggleField
+            label="AutoSave"
+            checked={RAautoSave === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("RAautoSave", "Decky_autoSave")}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t("Bezels")}
+            checked={RABezels === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("RABezels", "Decky_bezels")}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t("LCDShader")}
+            checked={RAHandHeldShader === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("RAHandHeldShader", "Decky_shaders_LCD")}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t("CRTShader2D")}
+            checked={RAHandClassic2D === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("RAHandClassic2D", "Decky_shaders_2D")}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t("CRTShader3D")}
+            checked={RAHandClassic3D === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("RAHandClassic3D", "Decky_shaders_3D")}
+          />
+        </PanelSectionRow>
+      </PanelSection>
+      <PanelSection title={t("AspectRatiosTitle")}>
+        <PanelSectionRow>
+          {console.log({ arSega })}
+          {arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined ? (
+            <div>
+              <SteamSpinner />
+            </div>
+          ) : (
+            <div>
+              <p>Sega Classics: {getAR(arSega)}</p>
+              <p>Nintendo Classics: {getAR(arSnes)}</p>
+              <p>3D Classics: {getAR(arClassic3D)}</p>
+              <p>Nintendo GameCube: {getAR(arDolphin)}</p>
+            </div>
+          )}
+          <Dropdown
+            strDefaultLabel={t("AspectRatiosSelect")}
+            rgOptions={dropdownOptions}
+            selectedOption={dropdownOptions[0]}
+            disabled={
+              arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined
+                ? true
+                : false
+            }
+            onChange={(e: SingleDropdownOption) => {
+              setFunction(e);
+            }}
+          />
+        </PanelSectionRow>
+      </PanelSection>
     </>
   ); // Return;
 };
