@@ -2,6 +2,7 @@
   "startWatcherBody": "CloudSync prêt !",
   "uploadingWatcherBody": "Chargement... ne pas éteindre votre appareil",
   "exitWatcherBody": "CloudSync terminé !",
+  "noInternetWatcherBody": "CloudSync désactivé. Vos jeux seront téléchargés la prochaine fois que vous les chargerez avec une connexion internet.",
   "ControlsTitle": "Raccourcis",
   "QuickSettingsTitle": "Paramètres rapides",
   "CheatsheetButton": "Ouvrir la feuille de triche",

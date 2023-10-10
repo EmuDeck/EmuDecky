@@ -2,6 +2,7 @@
   "startWatcherBody": "CloudSync pronto!",
   "uploadingWatcherBody": "A enviar... não desligue o dispositivo",
   "exitWatcherBody": "CloudSync concluído!",
+  "noInternetWatcherBody": "CloudSync desativado. Seus jogos serão carregados na próxima vez que você os iniciar com conexão à internet.",
   "ControlsTitle": "Atalhos",
   "QuickSettingsTitle": "Definições Rápidas",
   "CheatsheetButton": "Abrir Folha de Dicas",

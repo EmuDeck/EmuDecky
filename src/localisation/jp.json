@@ -2,6 +2,7 @@
   "startWatcherBody": "CloudSyncの準備完了！",
   "uploadingWatcherBody": "アップロード中... デバイスを切らないでください",
   "exitWatcherBody": "CloudSyncが完了しました！",
+  "noInternetWatcherBody": "CloudSyncが無効になっています。次回、インターネット接続時にゲームがアップロードされます。",
   "ControlsTitle": "ホットキー",
   "QuickSettingsTitle": "クイック設定",
   "CheatsheetButton": "チートシートを開く",

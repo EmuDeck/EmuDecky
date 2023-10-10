@@ -2,6 +2,7 @@
   "startWatcherBody": "云同步准备就绪！",
   "uploadingWatcherBody": "上传中... 请不要关闭您的设备",
   "exitWatcherBody": "云同步完成！",
+  "noInternetWatcherBody": "CloudSync已禁用。您的游戏将在下次加载时使用互联网连接上传。",
   "ControlsTitle": "热键",
   "QuickSettingsTitle": "快速设置",
   "CheatsheetButton": "打开速查表",

@@ -2,6 +2,7 @@
   "startWatcherBody": "¡CloudSync listo!",
   "uploadingWatcherBody": "Subiendo... no apagues tu dispositivo",
   "exitWatcherBody": "¡CloudSync completado!",
+  "noInternetWatcherBody": "CloudSync desactivado. Tus juegos se subirán la próxima vez que los inicies con conexión a internet.",
   "ControlsTitle": "Controles y atajos",
   "QuickSettingsTitle": "Configuración rápida",
   "CheatsheetButton": "Ver controles y atajos",

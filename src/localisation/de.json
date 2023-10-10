@@ -1,6 +1,7 @@
 {
   "startWatcherBody": "CloudSync bereit!",
   "uploadingWatcherBody": "Hochladen... Gerät nicht ausschalten",
+  "noInternetWatcherBody": "CloudSync deaktiviert. Deine Spiele werden beim nächsten Laden mit Internetverbindung hochgeladen.",
   "exitWatcherBody": "CloudSync abgeschlossen!",
   "ControlsTitle": "Tastenkombinationen",
   "QuickSettingsTitle": "Schnelleinstellungen",
