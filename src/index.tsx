@@ -82,14 +82,6 @@ export default definePlugin((serverAPI: ServerAPI) => {
           bodyMessage = "disabled";
         }
 
-        if (result === "disabled") {
-          isFirstWatching = true;
-          isFirstUploading = true;
-          isFirstInactive = true;
-          showToast = true;
-          bodyMessage = "disabled";
-        }
-
         if (result === "noInternet") {
           isFirstWatching = true;
           isFirstUploading = true;
