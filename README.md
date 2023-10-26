@@ -1,4 +1,4 @@
-# EmuDecky 1.0.0
+# EmuDecky 1.0.2
 
 You can use this Decky Loader plugin to check EmuDeck's hotkeys and manage EmuDeck Quick Settings, more features will be added soon
 
