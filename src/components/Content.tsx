@@ -38,6 +38,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     serverAPI: undefined,
     emuDeckConfig: {
       cloud_sync_status: undefined,
+      netPlay: undefined,
       RABezels: undefined,
       RAHandClassic2D: undefined,
       RAHandClassic3D: undefined,
@@ -72,6 +73,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   const { emuDeckConfig, updating } = state;
   const {
     cloud_sync_status,
+    netPlay,
     RABezels,
     RAHandClassic2D,
     RAHandClassic3D,
@@ -264,15 +266,26 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       </PanelSection>
       <PanelSection title={t("QuickSettingsTitle")}>
         {branch === "early" || branch === "early-early" || branch === "dev" || branch === null ? (
-          <PanelSectionRow>
-            <ToggleField
-              label="CloudSync"
-              checked={cloud_sync_status === "true" ? true : false}
-              layout="below"
-              disabled={updating ? true : false}
-              onChange={() => toggleFunction("cloud_sync_status", "pwd")}
-            />
-          </PanelSectionRow>
+          <>
+            <PanelSectionRow>
+              <ToggleField
+                label="CloudSync"
+                checked={cloud_sync_status === "true" ? true : false}
+                layout="below"
+                disabled={updating ? true : false}
+                onChange={() => toggleFunction("cloud_sync_status", "pwd")}
+              />
+            </PanelSectionRow>
+            <PanelSectionRow>
+              <ToggleField
+                label="RetroArch local Co-Op"
+                checked={netPlay === "true" ? true : false}
+                layout="below"
+                disabled={updating ? true : false}
+                onChange={() => toggleFunction("netPlay", "pwd")}
+              />
+            </PanelSectionRow>
+          </>
         ) : (
           ""
         )}
