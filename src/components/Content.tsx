@@ -265,7 +265,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         </PanelSectionRow>
       </PanelSection>
       <PanelSection title={t("QuickSettingsTitle")}>
-        {branch === "early" || branch === "early-early" || branch === "dev" || branch === null ? (
+        {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
           <>
             <PanelSectionRow>
               <ToggleField
