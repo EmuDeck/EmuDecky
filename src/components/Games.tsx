@@ -190,7 +190,15 @@ const Games: VFC = () => {
   //   );
 
   return (
-    <div style={{ marginTop: "50px", color: "white" }}>
+
+
+   <div
+     style={{
+       marginTop: "40px",
+       height: "calc(100% - 40px)",
+       background: "#0e141b",
+     }}
+   >
       <style>{`
         .games{
           display: flex;
@@ -205,6 +213,8 @@ const Games: VFC = () => {
           transition: .5s;
           border:0px;
           padding:0;
+          line-height:0;
+          max-height:218px;
         }
         .game.gpfocus{
           transform: scale(1.1);
@@ -226,9 +236,6 @@ const Games: VFC = () => {
         }
         .game.gpfocus.game__bg{
           opacity:0.2
-        }
-        #Footer{
-          display:none
         }
       `}</style>
       <Tabs
