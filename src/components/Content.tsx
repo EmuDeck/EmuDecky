@@ -5,6 +5,7 @@ import {
   PanelSection,
   PanelSectionRow,
   Router,
+  Navigation,
   ServerAPI,
   showContextMenu,
   ToggleField,
@@ -195,6 +196,13 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
+      <PanelSection title="Launch Games">
+        <PanelSectionRow>
+          <ButtonItem layout="below" onClick={(e: any) => Navigation.Navigate("/games")}>
+            Game Launcher
+          </ButtonItem>
+        </PanelSectionRow>
+      </PanelSection>
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
@@ -204,7 +212,8 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
                 <Menu label="Menu" cancelText="Cancel" onCancel={() => {}}>
                   <MenuItem
                     onSelected={() => {
-                      Router.Navigate("/retroarch-hotkeys");
+                      Navigation.CloseSideMenus();
+                      Navigation.Navigate("/retroarch-hotkeys");
                     }}>
                     Retro Systems, Dreamcast, N64, Saturn, etc.
                   </MenuItem>
