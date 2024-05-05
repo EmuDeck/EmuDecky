@@ -4,7 +4,7 @@ import { Tabs, Button, Focusable } from "decky-frontend-lib";
 const Games: VFC = () => {
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
-  //Fake Json from the backend.
+  //Fake Json from the backend for testing
   const jsonTabs = [
     {
       title: "Super Nintendo",
@@ -126,6 +126,9 @@ const Games: VFC = () => {
     console.log("Lontana do your magic", launcher, game);
   };
 
+  //We push the image
+  // Lontana magic again
+
   //We build the tabs
   const tabs = jsonTabs.map((item) => {
     return {
@@ -201,51 +204,96 @@ const Games: VFC = () => {
    >
       <style>{`
         .games{
-          display: flex;
-          flex-wrap: wrap;
-          gap:15px;
-          height:100%;
+          // display: flex;
+          // flex-wrap: wrap;
+          // gap:15px;
+          // height:100%;
+          grid-template-columns: repeat(auto-fill, 133px);
+          grid-auto-rows: 199.5px;
+          gap: 42px 16px;
+          font-size: 18.1364px;
+          padding-left: 8px;
+          padding-right: 8px;
+          display: grid;
+          box-sizing: border-box;
+          user-select: none;
+          width: 100%;
+          height: auto;
+          padding: 8px 0px;
+          grid-auto-flow: row;
+          justify-content: space-between;
         }
         .game{
-          position:relative;
-          width: calc(20% - 15px);
-          border-radius:10px;
-          transition: .5s;
+          //position:relative;
+          //width: calc(20% - 15px);
+          // transition: .5s;
           border:0px;
           padding:0;
           line-height:0;
-          max-height:218px;
+          // max-height:218px;
+          overflow: visible;
+          border: none;
+          box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, .25);
+          filter: brightness(0.9);
+          transition: filter, box-shadow, transform .1s cubic-bezier(0.16, 0.86, 0.43, 0.99);
+          outline: none;
+          box-sizing: content-box;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          position: relative;
+          cursor: pointer;
+          transform-origin: 50% 50%;
+          transform-style: preserve-3d;
+          transform: scale(0.98)
+
         }
-        .game.gpfocus{
-          transform: scale(1.1);
-          transition: .5s
+        .game.gpfocus, .game:hover{
+          transition-duration: .05s;
+          transition-timing-function: ease-out;
+          filter: brightness(0.8) contrast(1.05) saturate(1);
+          transform: scale(1.08)
         }
         .game__img{
           position:relative;
           width:100%;
-          border-radius:10px;
+
         }
+
+
+
         .game__bg{
-          position:absolute;
-          z-index: -1;
-          top:5px;
-          left:-5%;
-          filter:blur(100px);
-          opacity:0;
-          width:100%;
+           width: 130px;
+           height: 200px;
+           position: absolute;
+           z-index: -99;
+           transform: translateY(0%) translateX(-100%) scaleX(0.8) scaleY(0.8);
+           margin: auto;
+           padding-top: 0 !important;
+           filter: saturate(3) brightness(200%) blur(50px);
+           opacity: 0;
+           object-fit: fill;
+           pointer-events: none;
+           transition-property: opacity, transform;
+           transition-duration: .4s;
+           transition-timing-function: ease-in-out;
         }
-        .game.gpfocus.game__bg{
-          opacity:0.2
+        .game.gpfocus  .game__bg, .game:hover  .game__bg{
+          opacity: 0.4;
+          transform: translateY(0%) translateX(-100%) scaleX(1) scaleY(1);
+          transition-property: opacity, transform;
         }
       `}</style>
-      <Tabs
-        title="Theme Manager"
-        activeTab={currentTab}
-        onShowTab={(tabID: string) => {
-          setCurrentTab(tabID);
-        }}
-        tabs={tabs}
-      />
+      {tabs && (
+        <Tabs
+          title="Theme Manager"
+          activeTab={currentTab}
+          onShowTab={(tabID: string) => {
+            setCurrentTab(tabID);
+          }}
+          tabs={tabs}
+        />
+      )}
     </div>
   );
 };
