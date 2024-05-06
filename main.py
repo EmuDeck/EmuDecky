@@ -13,28 +13,28 @@ import decky_plugin
 
 
 class Plugin:
-            
+
     async def emudeck(self, command):
         # decky_plugin.logger.info("cloud_decky_check_status")
-        bash_command = ". /home/deck/.config/EmuDeck/backend/functions/all.sh && " + command
+        bash_command = ". $HOME/.config/EmuDeck/backend/functions/all.sh && " + command
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         # decky_plugin.logger.info(result)
         # decky_plugin.logger.info(result.stdout)
         # decky_plugin.logger.info(result.stderr)
         cleaned_stdout = result.stdout.strip()
         return cleaned_stdout
-    
+
     async def getSettings(self):
         # Define a regex pattern to find lines with variables and values
         pattern = re.compile(r'(\w+)=(\w+)')
-        
+
         # Path to the configuration file
         user_home = os.path.expanduser("~")
         config_file_path = os.path.join(user_home, 'emudeck', 'settings.sh')
-        
+
         # Create a dictionary to store variables and their values
         configuration = {}
-        
+
         # Open the configuration file and process each line
         with open(config_file_path, 'r') as file:
             for line in file:
@@ -44,21 +44,21 @@ class Plugin:
                     variable = match.group(1)
                     value = match.group(2)
                     configuration[variable] = value
-                    
-                    
+
+
         bash_command = "cd $HOME/.config/EmuDeck/backend/ && git rev-parse --abbrev-ref HEAD"
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        
+
         configuration["branch"] = result.stdout.strip()
-        
+
         # Convert the dictionary into a JSON object
         json_configuration = json.dumps(configuration, indent=4)
-        
+
         # Print the resulting JSON
         return json_configuration
-                    
+
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
-    async def _main(self):        
+    async def _main(self):
         bash_command = "cd $HOME/.config/EmuDeck/backend/ && git reset --hard && git pull"
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
@@ -87,6 +87,5 @@ class Plugin:
             os.path.join(decky_plugin.DECKY_HOME, "template"),
             os.path.join(decky_plugin.DECKY_USER_HOME, ".local", "share", "decky-template"))
 
-        
-        
-            
+
+
