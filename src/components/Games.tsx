@@ -1,25 +1,98 @@
-import { VFC, useState } from "react";
-import { Tabs, Button, Focusable } from "decky-frontend-lib";
+import { VFC, useState, useEffect } from "react";
+import { Tabs, Button, Focusable, SteamSpinner } from "decky-frontend-lib";
 import { launchApp } from "../common/steamshortcuts";
 
 const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
+  const [state, setState] = useState<any>({ games: undefined, tabs: undefined });
+  let { games, tabs } = state;
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
-  //Fake Json from the backend for testing
-  const jsonTabs = [
-    {
-      title: "Super Nintendo Entertainment System",
-      id: "snes",
-      launcher:
-        "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
-      games: [
-        {
-          name: "Legend of Zelda, The - A Link to the Past (USA)",
-          filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
-        },
-      ],
-    },
-  ];
+  const getData = async () => {
+    const gameList = [
+      {
+        title: "Super Nintendo Entertainment System",
+        id: "snes",
+        launcher:
+          "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
+        games: [
+          {
+            name: "Legend of Zelda, The - A Link to the Past (USA)",
+            img: "",
+            filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
+          },
+        ],
+      },
+    ];
+    //
+    ////
+    //////
+    // Lontana intercept the json up there and insert its image url, since this is a react app, the same app should cache
+    // the url so no need to download them I think.
+    //////
+    ////
+    //
+    setState({ ...state, games: gameList });
+    //Pick up real data from the backend
+    //     await serverAPI
+    //       .callPluginMethod("generate_game_lists", { roms_dir: `/run/media/mmcblk0p1/Emulation/roms` })
+    //       .then((response: any) => {
+    //         const result: any = response.result;
+    //         //const gameList: any = JSON.parse(result);
+    //         //
+    //         console.log({ result });
+    //         //console.log({ gameList });
+    //
+    //         const gameList = [
+    //           {
+    //             title: "Super Nintendo Entertainment System",
+    //             id: "snes",
+    //             launcher:
+    //               "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
+    //             games: [
+    //               {
+    //                 name: "Legend of Zelda, The - A Link to the Past (USA)",
+    //                 filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
+    //               },
+    //             ],
+    //           },
+    //         ];
+    //
+    //         setState({ ...state, games: gameList });
+    //       });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (games) {
+      const tabs = games.map((item: any) => {
+        return {
+          title: item.title,
+          id: item.id,
+          content: (
+            <Focusable className="games">
+              {item["games"].map((game: any) => {
+                return (
+                  <Button
+                    className="game"
+                    key={game.name}
+                    onClick={() => {
+                      launchGame(item.launcher, game.filename, game.name);
+                    }}>
+                    <img className="game__img" src={game.img} alt={game.name} />
+                    <img className="game__bg" src={game.img} alt={game.name} />
+                  </Button>
+                );
+              })}
+            </Focusable>
+          ),
+        };
+      });
+      setState({ ...state, tabs: tabs });
+    }
+  }, [games]);
 
   const launchGame = (launcher: string, game: string, name: string) => {
     const launcherComplete = launcher.replace(/{file.path}/g, `"${game}"`);
@@ -28,72 +101,6 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
       exec: `${launcherComplete}`,
     });
   };
-
-  //We push the image
-  // Lontana magic again
-
-  //We build the tabs
-  const tabs = jsonTabs.map((item) => {
-    return {
-      title: item.title,
-      id: item.id,
-      content: (
-        <Focusable className="games">
-          {item["games"].map((game) => {
-            return (
-              <Button
-                className="game"
-                key={game.name}
-                onClick={() => {
-                  launchGame(item.launcher, game.filename, game.name);
-                }}>
-                <img className="game__img" src={game.img} alt={game.name} />
-                <img className="game__bg" src={game.img} alt={game.name} />
-              </Button>
-            );
-          })}
-        </Focusable>
-      ),
-    };
-  });
-
-  console.log({ tabs });
-
-  // const tabs = [
-  //   {
-  //     title: "Super Nintendo",
-  //     id: "snes",
-  //     launcher: "/home/deck/Emulation/tools/launchers/retroarch.sh",
-  //     content: games,
-  //   },
-  //   { title: "Nintendo", id: "nes", launcher: "/home/deck/Emulation/tools/launchers/retroarch.sh", content: games2 },
-  // ];
-
-  //   const games = (
-  //     <Focusable>
-  //       <div className="games">
-  //         <div className="game">
-  //           <img className="game__img" src="https://cdn2.steamgriddb.com/thumb/8908077ce7fd405516d81c2c929de429.jpg" />
-  //           <img className="game__bg" src="https://cdn2.steamgriddb.com/thumb/8908077ce7fd405516d81c2c929de429.jpg" />
-  //         </div>
-  //         <div className="game">
-  //           <img className="game__img" src="https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg" />
-  //           <img className="game__bg" src="https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg" />
-  //         </div>
-  //       </div>
-  //     </Focusable>
-  //   );
-  //
-  //   const games2 = (
-  //     <Focusable>
-  //       <div className="games">
-  //         <div className="game">
-  //           <img className="game__img" src="https://cdn2.steamgriddb.com/thumb/8908077ce7fd405516d81c2c929de429.jpg" />
-  //           <img className="game__bg" src="https://cdn2.steamgriddb.com/thumb/8908077ce7fd405516d81c2c929de429.jpg" />
-  //         </div>
-  //       </div>
-  //     </Focusable>
-  //   );
 
   return (
     <div
@@ -184,6 +191,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
           transition-property: opacity, transform;
         }
       `}</style>
+      {!tabs && <SteamSpinner />}
       {tabs && (
         <Tabs
           title="Theme Manager"
