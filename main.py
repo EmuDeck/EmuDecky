@@ -32,6 +32,17 @@ class Plugin:
         # decky_plugin.logger.info(result.stderr)
         cleaned_stdout = result.stdout.strip()
         return cleaned_stdout
+
+    async def emudeck_dirty(self, command):
+        decky_plugin.logger.info("cloud_decky_check_status")
+        bash_command = ". $HOME/.config/EmuDeck/backend/functions/all.sh && " + command
+        result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        decky_plugin.logger.info(result)
+        decky_plugin.logger.info(result.stdout)
+        decky_plugin.logger.info(result.stderr)
+        cleaned_stdout = result.stdout.strip()
+        return result.stdout
+
     # START QL
     async def get_id(self):
         with open(os.path.join(confdir, "scid.txt"), "r") as sc:

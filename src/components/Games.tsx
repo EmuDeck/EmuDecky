@@ -8,57 +8,23 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
   const getData = async () => {
-    const gameList = [
-      {
-        title: "Super Nintendo Entertainment System",
-        id: "snes",
-        launcher:
-          "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
-        games: [
-          {
-            name: "Legend of Zelda, The - A Link to the Past (USA)",
-            img: "",
-            filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
-          },
-        ],
-      },
-    ];
-    //
-    ////
-    //////
-    // Lontana intercept the json up there and insert its image url, since this is a react app, the same app should cache
-    // the url so no need to download them I think.
-    //////
-    ////
-    //
-    setState({ ...state, games: gameList });
-    //Pick up real data from the backend
-    //     await serverAPI
-    //       .callPluginMethod("generate_game_lists", { roms_dir: `/run/media/mmcblk0p1/Emulation/roms` })
-    //       .then((response: any) => {
-    //         const result: any = response.result;
-    //         //const gameList: any = JSON.parse(result);
-    //         //
-    //         console.log({ result });
-    //         //console.log({ gameList });
-    //
-    //         const gameList = [
-    //           {
-    //             title: "Super Nintendo Entertainment System",
-    //             id: "snes",
-    //             launcher:
-    //               "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
-    //             games: [
-    //               {
-    //                 name: "Legend of Zelda, The - A Link to the Past (USA)",
-    //                 filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
-    //               },
-    //             ],
-    //           },
-    //         ];
-    //
-    //         setState({ ...state, games: gameList });
-    //       });
+    serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameLists` }).then((response: any) => {
+      const result: any = response.result;
+
+      const gameList: any = JSON.parse(result);
+
+      console.log({ gameList });
+
+      //
+      ////
+      //////
+      ////// Lontana intercept the json up there and insert its image url :)
+      //////
+      ////
+      //
+
+      setState({ ...state, games: gameList });
+    });
   };
 
   useEffect(() => {
