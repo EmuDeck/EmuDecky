@@ -5,12 +5,21 @@ import asyncio
 import re
 import json
 
+import base64, ssl, certifi
+from pathlib import Path
+from json import dumps as jsonDumps
+from itertools import chain
 
 # The decky plugin module is located at decky-loader/plugin
 # For easy intellisense checkout the decky-loader code one directory up
 # or add the `decky-loader/plugin` path to `python.analysis.extraPaths` in `.vscode/settings.json`
 import decky_plugin
 
+from subprocess import Popen, PIPE
+from urllib.error import HTTPError
+from urllib.request import urlopen, Request
+
+confdir = os.environ["DECKY_PLUGIN_SETTINGS_DIR"]
 
 class Plugin:
 
@@ -23,10 +32,23 @@ class Plugin:
         # decky_plugin.logger.info(result.stderr)
         cleaned_stdout = result.stdout.strip()
         return cleaned_stdout
+    # START QL
+    async def get_id(self):
+        with open(os.path.join(confdir, "scid.txt"), "r") as sc:
+            id = sc.read()
+            try:
+                id = int(id)
+                return id
+            except ValueError:
+                return -1
 
+    async def set_id(self, id):
+        with open(os.path.join(confdir, "scid.txt"), "w") as sc:
+            sc.write(str(id))
+    # END QL
     async def getSettings(self):
         # Define a regex pattern to find lines with variables and values
-        pattern = re.compile(r'(\w+)=(\w+)')
+        pattern = re.compile(r'([A-Za-z_][A-Za-z0-9_]*)=(.*)')
 
         # Path to the configuration file
         user_home = os.path.expanduser("~")
@@ -61,6 +83,14 @@ class Plugin:
     async def _main(self):
         bash_command = "cd $HOME/.config/EmuDeck/backend/ && git reset --hard && git pull"
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        try:
+            sc = open(os.path.join(confdir, "scid.txt"), "x")
+            sc.close()
+        except FileExistsError:
+            pass
+
+
 
     # Function called first during the unload process, utilize this to handle your plugin being removed
     async def _unload(self):
