@@ -1,7 +1,7 @@
 import { VFC, useState } from "react";
 import { Tabs, Button, Focusable } from "decky-frontend-lib";
 
-const Games: VFC = () => {
+const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
   //Fake Json from the backend for testing
@@ -193,15 +193,12 @@ const Games: VFC = () => {
   //   );
 
   return (
-
-
-   <div
-     style={{
-       marginTop: "40px",
-       height: "calc(100% - 40px)",
-       background: "#0e141b",
-     }}
-   >
+    <div
+      style={{
+        marginTop: "40px",
+        height: "calc(100% - 40px)",
+        background: "#0e141b",
+      }}>
       <style>{`
         .games{
           // display: flex;

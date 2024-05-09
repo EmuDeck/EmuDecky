@@ -60,8 +60,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
       const result: any = response.result;
 
-      console.log({ result });
-
       const emuDeckConfig: any = JSON.parse(result);
       if (update) {
         setState({ ...state, serverAPI, emuDeckConfig, updating: false });
@@ -92,10 +90,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     branch,
     toolsPath,
   } = emuDeckConfig;
-
-  useEffect(() => {
-    console.log({ toolsPath });
-  }, [emuDeckConfig]);
 
   const listsega = [
     {
@@ -203,6 +197,13 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
+      <PanelSection title="Launch Games">
+        <PanelSectionRow>
+          <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
+            Game Launcher
+          </ButtonItem>
+        </PanelSectionRow>
+      </PanelSection>
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
