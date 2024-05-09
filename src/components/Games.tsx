@@ -1,5 +1,6 @@
 import { VFC, useState } from "react";
 import { Tabs, Button, Focusable } from "decky-frontend-lib";
+import { launchApp } from "../common/steamshortcuts";
 
 const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
@@ -7,123 +8,25 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   //Fake Json from the backend for testing
   const jsonTabs = [
     {
-      title: "Super Nintendo",
+      title: "Super Nintendo Entertainment System",
       id: "snes",
-      launcher: "/home/deck/Emulation/tools/launchers/retroarch.sh -L /core/snes9x.dll",
+      launcher:
+        "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
       games: [
         {
-          name: "Super Mario World",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 2",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 2",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 3",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 3",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 4",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 4",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 5",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 5",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 6",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 7",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 8",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 8",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 9",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 9",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-        {
-          name: "Super Mario World 10",
-          img: "https://cdn2.steamgriddb.com/thumb/5414ac8f3723b3b3b411cdd6e8b9f01b.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Super Mario Kart 10",
-          img: "https://cdn2.steamgriddb.com/thumb/366db7a591a75efd125cb44641124f2e.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
-        },
-      ],
-    },
-    {
-      title: "Nintendo Wii",
-      id: "n64",
-      launcher: "/home/deck/Emulation/tools/launchers/retroarch.sh -L /core/snes9x.dll",
-      games: [
-        {
-          name: "Super Mario Galaxy 2",
-          img: "https://cdn2.steamgriddb.com/thumb/e407ebda50100920810c87e64a79abd8.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario World (USA).zip",
-        },
-        {
-          name: "Mario Kart Wii",
-          img: "https://cdn2.steamgriddb.com/thumb/3fb22546e0a13fb8b5d7345218eef2a5.jpg",
-          filename: "/home/deck/Emulation/roms/Super Mario Kart (USA).zip",
+          name: "Legend of Zelda, The - A Link to the Past (USA)",
+          filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
         },
       ],
     },
   ];
 
-  const launchGame = (launcher: string, game: string) => {
-    console.log("Lontana do your magic", launcher, game);
+  const launchGame = (launcher: string, game: string, name: string) => {
+    const launcherComplete = launcher.replace(/{file.path}/g, `"${game}"`);
+    launchApp(serverAPI, {
+      name: name,
+      exec: `${launcherComplete}`,
+    });
   };
 
   //We push the image
@@ -142,7 +45,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
                 className="game"
                 key={game.name}
                 onClick={() => {
-                  launchGame(item.launcher, game.filename);
+                  launchGame(item.launcher, game.filename, game.name);
                 }}>
                 <img className="game__img" src={game.img} alt={game.name} />
                 <img className="game__bg" src={game.img} alt={game.name} />
