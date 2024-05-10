@@ -19,6 +19,23 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
         const gameList: any = JSON.parse(result);
         console.log({ gameList });
 
+        // JSON EXAMPLE
+        // [
+        //   {
+        //     title: "Super Nintendo Entertainment System",
+        //     id: "snes",
+        //     launcher:
+        //       "/run/media/mmcblk0p1/Emulation/tools/launchers/retroarch.sh -L /home/deck/.var/app/org.libretro.RetroArch/config/retroarch/cores/snes9x_libretro.so {file.path}",
+        //     games: [
+        //       {
+        //         name: "Legend of Zelda, The - A Link to the Past (USA)",
+        //         img: "",
+        //         filename: "/run/media/mmcblk0p1/Emulation/roms/snes/Legend of Zelda, The - A Link to the Past (USA).7z",
+        //       },
+        //     ],
+        //   },
+        // ]
+
         //
         ////
         //////
