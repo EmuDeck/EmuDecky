@@ -7,7 +7,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   let { games, tabs } = state;
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
-  const getData = async () => {
+  const getDataGames = async () => {
     const cacheGames = localStorage.getItem("emudecky_gamelist");
 
     if (cacheGames) {
@@ -34,7 +34,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   };
 
   useEffect(() => {
-    getData();
+    getDataGames();
   }, []);
 
   useEffect(() => {
