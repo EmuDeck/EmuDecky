@@ -13,5 +13,10 @@
   "CRTShader3D": "3D游戏CRT着色器",
   "Bezels": "边框",
   "onlyEATitle": "Only Early access",
-  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly",
+  "LauncherTitle": "启动游戏",
+  "LauncherBtn": "游戏启动器",
+  "UpdateEmusTitle": "更新模拟器",
+  "UpdateEmusFlatpakBtn": "更新 Flatpak",
+  "UpdateEmusAppImageBtn": "更新 AppImage"
 }

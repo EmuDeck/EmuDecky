@@ -200,14 +200,14 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      <PanelSection title="Launch Games">
+      <PanelSection title={t("LauncherTitle")}>
         <PanelSectionRow>
           <Focusable
             flow-children="horizontal"
             style={{ display: "flex", justifyContent: "space-between", padding: 0, gap: "8px" }}>
             <div style={{ flexGrow: 1 }}>
               <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
-                Game Launcher
+                {t("LauncherBtn")}
               </ButtonItem>
             </div>
             <div style={{ padding: "10px 0" }}>
@@ -393,27 +393,27 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
-      <PanelSection title="Update Emulators">
+      <PanelSection title={t("UpdateEmusTitle")}>
         <PanelSectionRow>
           <ButtonItem
             layout="below"
             onClick={() =>
               launchApp(serverAPI, {
-                name: "Update Flatpaks",
+                name: t("UpdateEmusFlatpakBtn"),
                 exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
               })
             }>
-            Update Flatpaks
+            {t("UpdateEmusFlatpakBtn")}
           </ButtonItem>
           <ButtonItem
             layout="below"
             onClick={() =>
               launchApp(serverAPI, {
-                name: "Update AppImages",
+                name: t("UpdateEmusAppImageBtn"),
                 exec: `${toolsPath}/binupdate/binupdate.sh`,
               })
             }>
-            Update AppImages
+            {t("UpdateEmusAppImageBtn")}
           </ButtonItem>
         </PanelSectionRow>
       </PanelSection>

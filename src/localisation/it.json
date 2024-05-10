@@ -13,5 +13,10 @@
   "CRTShader3D": "Shader CRT per giochi 3D",
   "Bezels": "Bordi",
   "onlyEATitle": "Only Early access",
-  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly",
+  "LauncherTitle": "Avvia Giochi",
+  "LauncherBtn": "Lanciatore di Giochi",
+  "UpdateEmusTitle": "Aggiorna Emulatori",
+  "UpdateEmusFlatpakBtn": "Aggiorna Flatpak",
+  "UpdateEmusAppImageBtn": "Aggiorna AppImage"
 }
