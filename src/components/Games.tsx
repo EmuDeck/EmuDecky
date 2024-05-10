@@ -119,6 +119,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
           transform-origin: 50% 50%;
           transform-style: preserve-3d;
           transform: scale(0.98)
+          background:#efefef
 
         }
         .game.gpfocus, .game:hover{
@@ -128,12 +129,37 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
           transform: scale(1.08)
         }
         .game__img{
-          position:relative;
-          width:100%;
-
+          display: inline-block;
+           font-family: Arial, sans-serif;
+           font-weight: 300;
+           line-height: 2;
+           text-align: center;
+           width:100%
+           position: relative;
         }
 
+        .game__img:before{
+          content: '';
+           width: 100%;
+           height: 100%;
+           background-color: #efefef;
+           position: absolute;
+           top: 0;
+           left: 0;
+        }
 
+        .game__img:after{
+          content: attr(alt);
+           font-size: 18px;
+           color: rgb(100, 100, 100);
+           display: block;
+           position: absolute;
+           z-index: 2;
+           top: 5px;
+           left: 0;
+           width: 100%;
+           height: 100%;
+        }
 
         .game__bg{
            width: 130px;
