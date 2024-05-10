@@ -8,23 +8,29 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
 
   const getData = async () => {
-    serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameLists` }).then((response: any) => {
-      const result: any = response.result;
+    const cacheGames = localStorage.getItem("emudecky_gamelist");
 
-      const gameList: any = JSON.parse(result);
-
-      console.log({ gameList });
-
-      //
-      ////
-      //////
-      ////// Lontana intercept the json up there and insert its image url :)
-      //////
-      ////
-      //
-
+    if (cacheGames) {
+      const gameList: any = JSON.parse(cacheGames);
       setState({ ...state, games: gameList });
-    });
+    } else {
+      serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameLists` }).then((response: any) => {
+        const result: any = response.result;
+        const gameList: any = JSON.parse(result);
+        console.log({ gameList });
+
+        //
+        ////
+        //////
+        ////// Lontana intercept the json up there and insert its image url :)
+        //////
+        ////
+        //
+
+        localStorage.setItem("emudecky_gamelist", result);
+        setState({ ...state, games: gameList });
+      });
+    }
   };
 
   useEffect(() => {
