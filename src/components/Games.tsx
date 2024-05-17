@@ -17,6 +17,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
       serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameLists` }).then((response: any) => {
         const result: any = response.result;
         const gameList: any = JSON.parse(result);
+        gameList.sort((a, b) => a.title.localeCompare(b.title));
         console.log({ gameList });
 
         // JSON EXAMPLE
