@@ -200,29 +200,33 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      <PanelSection title={t("LauncherTitle")}>
-        <PanelSectionRow>
-          <Focusable
-            flow-children="horizontal"
-            style={{ display: "flex", justifyContent: "space-between", padding: 0, gap: "8px" }}>
-            <div style={{ flexGrow: 1 }}>
-              <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
-                {t("LauncherBtn")}
-              </ButtonItem>
-            </div>
-            <div style={{ padding: "10px 0" }}>
-              <DialogButton
-                style={{ minWidth: 0 }}
-                onClick={() => {
-                  localStorage.removeItem("emudecky_gamelist");
-                  Navigation.Navigate("/games");
-                }}>
-                <FaArrowRotateRight />
-              </DialogButton>
-            </div>
-          </Focusable>
-        </PanelSectionRow>
-      </PanelSection>
+      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+        <PanelSection title={t("LauncherTitle")}>
+          <PanelSectionRow>
+            <Focusable
+              flow-children="horizontal"
+              style={{ display: "flex", justifyContent: "space-between", padding: 0, gap: "8px" }}>
+              <div style={{ flexGrow: 1 }}>
+                <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
+                  {t("LauncherBtn")}
+                </ButtonItem>
+              </div>
+              <div style={{ padding: "10px 0" }}>
+                <DialogButton
+                  style={{ minWidth: 0 }}
+                  onClick={() => {
+                    localStorage.removeItem("emudecky_gamelist");
+                    Navigation.Navigate("/games");
+                  }}>
+                  <FaArrowRotateRight />
+                </DialogButton>
+              </div>
+            </Focusable>
+          </PanelSectionRow>
+        </PanelSection>
+      ) : (
+        ""
+      )}
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
@@ -393,30 +397,34 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
-      <PanelSection title={t("UpdateEmusTitle")}>
-        <PanelSectionRow>
-          <ButtonItem
-            layout="below"
-            onClick={() =>
-              launchApp(serverAPI, {
-                name: t("UpdateEmusFlatpakBtn"),
-                exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
-              })
-            }>
-            {t("UpdateEmusFlatpakBtn")}
-          </ButtonItem>
-          <ButtonItem
-            layout="below"
-            onClick={() =>
-              launchApp(serverAPI, {
-                name: t("UpdateEmusAppImageBtn"),
-                exec: `${toolsPath}/binupdate/binupdate.sh`,
-              })
-            }>
-            {t("UpdateEmusAppImageBtn")}
-          </ButtonItem>
-        </PanelSectionRow>
-      </PanelSection>
+      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+        <PanelSection title={t("UpdateEmusTitle")}>
+          <PanelSectionRow>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusFlatpakBtn"),
+                  exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusFlatpakBtn")}
+            </ButtonItem>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusAppImageBtn"),
+                  exec: `${toolsPath}/binupdate/binupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusAppImageBtn")}
+            </ButtonItem>
+          </PanelSectionRow>
+        </PanelSection>
+      ) : (
+        ""
+      )}
     </>
   ); // Return;
 };
