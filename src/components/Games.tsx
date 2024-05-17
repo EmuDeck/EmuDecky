@@ -158,7 +158,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
            font-weight: 300;
            line-height: 2;
            text-align: center;
-           width:100%
+           width:100%;
            position: relative;
         }
 
