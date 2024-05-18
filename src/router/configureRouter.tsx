@@ -27,8 +27,13 @@ import {
   PS2HotkeysAlt,
 } from "../components/Hotkeys";
 
+import { Games } from "../components/Games";
+
 export default function configureRouter(serverAPI: ServerAPI, activate: Boolean) {
   if (activate) {
+    serverAPI.routerHook.addRoute("/games", () => <Games serverAPI={serverAPI} />, {
+      exact: true,
+    });
     serverAPI.routerHook.addRoute("/retroarch-hotkeys", RAHotkeys, {
       exact: true,
     });

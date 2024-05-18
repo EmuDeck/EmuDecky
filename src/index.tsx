@@ -1,5 +1,5 @@
 import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaGamepad } from "react-icons/fa";
 import { getTranslateFunc } from "./TranslationsF";
 //import { GlobalContext } from "./context/globalContext";
 // import { useState } from "react";
@@ -44,13 +44,13 @@ export default definePlugin((serverAPI: ServerAPI) => {
   //
 
   const checkCloudStatus = () => {
-    console.log("checkCloudStatus");
+    //console.log("checkCloudStatus");
     serverAPI
       .callPluginMethod("emudeck", { command: "cloud_decky_check_status" })
       .then((response) => {
         const result = response.result;
         let bodyMessage: any = "";
-        console.log({ result });
+        //console.log({ result });
         if (result === "started" && isFirstWatching) {
           isFirstWatching = false;
           isFirstUploading = true;
@@ -101,10 +101,10 @@ export default definePlugin((serverAPI: ServerAPI) => {
         bodyMessage = "";
       })
       .catch((error) => {
-        console.log({ error });
+        //console.log({ error });
         serverAPI.toaster.toast({
           title: "EmuDeck CloudSync",
-          body: "error",
+          body: error,
           logo: <img width="20" style={{ marginTop: "8px", marginLeft: "10px" }} src={logo} />,
         });
       });
@@ -168,10 +168,10 @@ export default definePlugin((serverAPI: ServerAPI) => {
       </GlobalContextProvider>
     ),
     //content: <Content serverAPI={serverAPI} />,
-    icon: <FaCloudUploadAlt />,
+    icon: <FaGamepad />,
     onDismount() {
-      console.log("Dismount");
-      console.log("Cleaning up Interval");
+      //console.log("Dismount");
+      //console.log("Cleaning up Interval");
       clearInterval(intervalid);
       configureRouter(serverAPI, false);
     },

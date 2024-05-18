@@ -5,6 +5,7 @@ import {
   PanelSection,
   PanelSectionRow,
   Router,
+  Navigation,
   ServerAPI,
   showContextMenu,
   ToggleField,
@@ -13,11 +14,15 @@ import {
   DropdownOption,
   MultiDropdownOption,
   SteamSpinner,
+  Focusable,
+  DialogButton,
 } from "decky-frontend-lib";
 import { getTranslateFunc } from "../TranslationsF";
 import React, { VFC } from "react"; //import { GlobalContext } from "./context/globalContext";
 import { GlobalContext } from "../context/globalContext";
 import { useContext, useState, useEffect } from "react";
+import { launchApp } from "../common/steamshortcuts";
+import { FaArrowRotateRight } from "react-icons/fa6";
 
 interface DropDownList {
   value: string;
@@ -49,12 +54,15 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       arSega: undefined,
       arSnes: undefined,
       branch: null,
+      toolsPath: undefined,
     },
     updating: false,
   });
+
   const getData = async (update: Boolean) => {
     await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
       const result: any = response.result;
+
       const emuDeckConfig: any = JSON.parse(result);
       if (update) {
         setState({ ...state, serverAPI, emuDeckConfig, updating: false });
@@ -65,7 +73,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   };
 
   useEffect(() => {
-    console.log("state change");
     if (state.emuDeckConfig.cloud_sync_status === undefined) {
       getData(false);
     }
@@ -84,9 +91,8 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     arSega,
     arSnes,
     branch,
+    toolsPath,
   } = emuDeckConfig;
-
-  console.log({ emuDeckConfig });
 
   const listsega = [
     {
@@ -184,7 +190,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     const { config, data, label } = incoming;
 
     const newValue = label.replace(":", "");
-    console.log({ state });
     serverAPI
       .callPluginMethod("emudeck", { command: `setSetting ${config} ${newValue} && ${data}` })
       .then((response: any) => {
@@ -195,6 +200,33 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
+      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+        <PanelSection title={t("LauncherTitle")}>
+          <PanelSectionRow>
+            <Focusable
+              flow-children="horizontal"
+              style={{ display: "flex", justifyContent: "space-between", padding: 0, gap: "8px" }}>
+              <div style={{ flexGrow: 1 }}>
+                <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
+                  {t("LauncherBtn")}
+                </ButtonItem>
+              </div>
+              <div style={{ padding: "10px 0" }}>
+                <DialogButton
+                  style={{ minWidth: 0 }}
+                  onClick={() => {
+                    localStorage.removeItem("emudecky_gamelist");
+                    Navigation.Navigate("/games");
+                  }}>
+                  <FaArrowRotateRight />
+                </DialogButton>
+              </div>
+            </Focusable>
+          </PanelSectionRow>
+        </PanelSection>
+      ) : (
+        ""
+      )}
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
@@ -204,7 +236,8 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
                 <Menu label="Menu" cancelText="Cancel" onCancel={() => {}}>
                   <MenuItem
                     onSelected={() => {
-                      Router.Navigate("/retroarch-hotkeys");
+                      Navigation.CloseSideMenus();
+                      Navigation.Navigate("/retroarch-hotkeys");
                     }}>
                     Retro Systems, Dreamcast, N64, Saturn, etc.
                   </MenuItem>
@@ -337,7 +370,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       </PanelSection>
       <PanelSection title={t("AspectRatiosTitle")}>
         <PanelSectionRow>
-          {console.log({ arSega })}
           {arSega === undefined || arSnes === undefined || arClassic3D === undefined || arDolphin === undefined ? (
             <div>
               <SteamSpinner />
@@ -365,6 +397,34 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
+      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+        <PanelSection title={t("UpdateEmusTitle")}>
+          <PanelSectionRow>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusFlatpakBtn"),
+                  exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusFlatpakBtn")}
+            </ButtonItem>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusAppImageBtn"),
+                  exec: `${toolsPath}/binupdate/binupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusAppImageBtn")}
+            </ButtonItem>
+          </PanelSectionRow>
+        </PanelSection>
+      ) : (
+        ""
+      )}
     </>
   ); // Return;
 };

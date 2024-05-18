@@ -13,5 +13,11 @@
   "CRTShader3D": "3Dゲーム用のCRTシェーダー",
   "Bezels": "ベゼル",
   "onlyEATitle": "Only Early access",
-  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly"
+  "onlyEA": "Right now this plugin is only available for EarlyAccess, follow us on Twitter to get updated when this public get released publicly",
+  "LauncherTitle": "ゲームを起動",
+  "LauncherBtn": "ゲームランチャー",
+  "UpdateEmusTitle": "エミュレーターを更新",
+  "UpdateEmusFlatpakBtn": "Flatpakを更新",
+  "UpdateEmusAppImageBtn": "AppImageを更新",
+  "loadingGames": "データベースを生成しています。しばらくお待ちください"
 }
