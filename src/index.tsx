@@ -1,5 +1,5 @@
 import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaGamepad } from "react-icons/fa";
 import { getTranslateFunc } from "./TranslationsF";
 //import { GlobalContext } from "./context/globalContext";
 // import { useState } from "react";
@@ -168,7 +168,7 @@ export default definePlugin((serverAPI: ServerAPI) => {
       </GlobalContextProvider>
     ),
     //content: <Content serverAPI={serverAPI} />,
-    icon: <FaCloudUploadAlt />,
+    icon: <FaGamepad />,
     onDismount() {
       //console.log("Dismount");
       //console.log("Cleaning up Interval");
