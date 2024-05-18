@@ -182,7 +182,17 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
           transition-property: opacity, transform;
         }
       `}</style>
-      {!tabs && <SteamSpinner />}
+      {!tabs && (
+        <div>
+          <div style={{ textAlign: "center", height: "100vh" }}>
+            <SteamSpinner>
+              <p>Generating Database, please be patient</p>
+              <p>Each game takes about 1 second to be scraped for the first time</p>
+            </SteamSpinner>
+          </div>
+        </div>
+      )}
+
       {tabs && (
         <Tabs
           title="Theme Manager"
