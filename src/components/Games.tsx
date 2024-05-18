@@ -1,11 +1,12 @@
 import { VFC, useState, useEffect } from "react";
 import { Tabs, Button, Focusable, SteamSpinner } from "decky-frontend-lib";
 import { launchApp } from "../common/steamshortcuts";
-
+import { getTranslateFunc } from "../TranslationsF";
 const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const [state, setState] = useState<any>({ games: undefined, tabs: undefined });
   let { games, tabs } = state;
   const [currentTab, setCurrentTab] = useState<string>("Tab1");
+  const t = getTranslateFunc();
 
   const getDataGames = async () => {
     const cacheGames = localStorage.getItem("emudecky_gamelist");
@@ -186,8 +187,7 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
         <div>
           <div style={{ textAlign: "center", height: "100vh" }}>
             <SteamSpinner>
-              <p>Generating Database, please be patient</p>
-              <p>Each game takes about 1 second to be scraped for the first time</p>
+              <p>{t("loadingGames")}</p>
             </SteamSpinner>
           </div>
         </div>

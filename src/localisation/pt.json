@@ -18,5 +18,6 @@
   "LauncherBtn": "Lançador de Jogos",
   "UpdateEmusTitle": "Atualizar Emuladores",
   "UpdateEmusFlatpakBtn": "Atualizar Flatpaks",
-  "UpdateEmusAppImageBtn": "Atualizar AppImages"
+  "UpdateEmusAppImageBtn": "Atualizar AppImages",
+  "loadingGames": "Gerando banco de dados, por favor, seja paciente"
 }

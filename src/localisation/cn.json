@@ -18,5 +18,6 @@
   "LauncherBtn": "游戏启动器",
   "UpdateEmusTitle": "更新模拟器",
   "UpdateEmusFlatpakBtn": "更新 Flatpak",
-  "UpdateEmusAppImageBtn": "更新 AppImage"
+  "UpdateEmusAppImageBtn": "更新 AppImage",
+  "loadingGames": "正在生成数据库，请耐心等待"
 }

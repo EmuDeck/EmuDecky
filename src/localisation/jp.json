@@ -18,5 +18,6 @@
   "LauncherBtn": "ゲームランチャー",
   "UpdateEmusTitle": "エミュレーターを更新",
   "UpdateEmusFlatpakBtn": "Flatpakを更新",
-  "UpdateEmusAppImageBtn": "AppImageを更新"
+  "UpdateEmusAppImageBtn": "AppImageを更新",
+  "loadingGames": "データベースを生成しています。しばらくお待ちください"
 }
