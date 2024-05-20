@@ -172,9 +172,10 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
            transition-timing-function: ease-in-out;
         }
         .game.gpfocus  .game__bg, .game:hover  .game__bg{
-          opacity: 0.4;
+          opacity: 1;
           transform: translateY(0%) translateX(-100%) scaleX(1) scaleY(1);
           transition-property: opacity, transform;
+          border:2px solid #fff
         }
       `}</style>
       {!tabs && (
