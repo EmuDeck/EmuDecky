@@ -19,5 +19,6 @@
   "UpdateEmusTitle": "Emulatoren aktualisieren",
   "UpdateEmusFlatpakBtn": "Flatpaks aktualisieren",
   "UpdateEmusAppImageBtn": "AppImages aktualisieren",
-  "loadingGames": "Datenbank wird erstellt, bitte gedulden Sie sich"
+  "loadingGames": "Datenbank wird erstellt, bitte gedulden Sie sich",
+  "scrapingWatcherBody": "Herunterladen von Kunstwerken"
 }

@@ -9,22 +9,24 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
   const t = getTranslateFunc();
 
   const getDataGames = async () => {
-    const cacheGames = localStorage.getItem("emudecky_gamelist");
-
-    if (cacheGames) {
-      const gameList: any = JSON.parse(cacheGames);
+    serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameListsJson` }).then((response: any) => {
+      //serverAPI.callPluginMethod("generate_game_lists").then((response: any) => {
+      const result: any = response.result;
+      console.log({ result });
+      const gameList: any = JSON.parse(result);
+      gameList.sort((a: any, b: any) => a.title.localeCompare(b.title));
+      console.log({ gameList });
+      localStorage.setItem("emudecky_gamelist", result);
       setState({ ...state, games: gameList });
-    } else {
-      serverAPI.callPluginMethod("emudeck_dirty", { command: `generateGameLists` }).then((response: any) => {
-        //serverAPI.callPluginMethod("generate_roms_json").then((response: any) => {
-        const result: any = response.result;
-        const gameList: any = JSON.parse(result);
-        gameList.sort((a: any, b: any) => a.title.localeCompare(b.title));
-        console.log({ gameList });
-        localStorage.setItem("emudecky_gamelist", result);
-        setState({ ...state, games: gameList });
-      });
-    }
+    });
+  };
+
+  const launchGame = (launcher: string, game: string, name: string) => {
+    const launcherComplete = launcher.replace(/{file.path}/g, `"${game}"`);
+    launchApp(serverAPI, {
+      name: name,
+      exec: `${launcherComplete}`,
+    });
   };
 
   useEffect(() => {
@@ -59,14 +61,6 @@ const Games: VFC<{ serverAPI: any }> = ({ serverAPI }) => {
       setState({ ...state, tabs: tabs });
     }
   }, [games]);
-
-  const launchGame = (launcher: string, game: string, name: string) => {
-    const launcherComplete = launcher.replace(/{file.path}/g, `"${game}"`);
-    launchApp(serverAPI, {
-      name: name,
-      exec: `${launcherComplete}`,
-    });
-  };
 
   return (
     <div

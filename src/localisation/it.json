@@ -19,5 +19,6 @@
   "UpdateEmusTitle": "Aggiorna Emulatori",
   "UpdateEmusFlatpakBtn": "Aggiorna Flatpak",
   "UpdateEmusAppImageBtn": "Aggiorna AppImage",
-  "loadingGames": "Generazione del database, si prega di essere pazienti"
+  "loadingGames": "Generazione del database, si prega di essere pazienti",
+  "scrapingWatcherBody": "Scaricamento di opere d'arte"
 }

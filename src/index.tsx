@@ -36,6 +36,7 @@ export default definePlugin((serverAPI: ServerAPI) => {
   let isFirstWatching = true;
   let isFirstUploading = true;
   let isFirstInactive = true;
+  let isFirstScraping = true;
   let showToast = false;
   let intervalid: any;
 
@@ -88,6 +89,13 @@ export default definePlugin((serverAPI: ServerAPI) => {
           isFirstInactive = true;
           showToast = true;
           bodyMessage = t("noInternetWatcherBody");
+        }
+
+        // Game Launcher
+        if (result === "scraping" && isFirstScraping) {
+          isFirstScraping = false;
+          showToast = true;
+          bodyMessage = t("scrapingWatcherBody");
         }
 
         if (showToast) {

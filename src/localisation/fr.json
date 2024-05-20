@@ -19,5 +19,6 @@
   "UpdateEmusTitle": "Mettre à jour les émulateurs",
   "UpdateEmusFlatpakBtn": "Mettre à jour les Flatpaks",
   "UpdateEmusAppImageBtn": "Mettre à jour les AppImages",
-  "loadingGames": "Génération de la base de données, veuillez patienter"
+  "loadingGames": "Génération de la base de données, veuillez patienter",
+  "scrapingWatcherBody": "Téléchargement d'œuvres d'art"
 }

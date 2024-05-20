@@ -19,5 +19,6 @@
   "UpdateEmusTitle": "Actualizar Emuladores",
   "UpdateEmusFlatpakBtn": "Actualizar Flatpaks",
   "UpdateEmusAppImageBtn": "Actualizar AppImages",
-  "loadingGames": "Generando base de datos, por favor sea paciente"
+  "loadingGames": "Generando base de datos, por favor sea paciente",
+  "scrapingWatcherBody": "Descargando carátulas"
 }
