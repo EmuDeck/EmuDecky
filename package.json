@@ -1,6 +1,6 @@
 {
   "name": "emudecky",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Official EmuDeck Decky plugin.",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c",
