@@ -197,17 +197,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
-        <PanelSection title={t("LauncherTitle")}>
-          <PanelSectionRow>
-            <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
-              {t("LauncherBtn")}
-            </ButtonItem>
-          </PanelSectionRow>
-        </PanelSection>
-      ) : (
-        ""
-      )}
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
