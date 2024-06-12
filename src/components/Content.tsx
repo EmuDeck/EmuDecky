@@ -14,15 +14,12 @@ import {
   DropdownOption,
   MultiDropdownOption,
   SteamSpinner,
-  Focusable,
-  DialogButton,
 } from "decky-frontend-lib";
 import { getTranslateFunc } from "../TranslationsF";
 import React, { VFC } from "react"; //import { GlobalContext } from "./context/globalContext";
 import { GlobalContext } from "../context/globalContext";
 import { useContext, useState, useEffect } from "react";
 import { launchApp } from "../common/steamshortcuts";
-import { FaArrowRotateRight } from "react-icons/fa6";
 
 interface DropDownList {
   value: string;
@@ -200,33 +197,6 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
   return (
     <>
-      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
-        <PanelSection title={t("LauncherTitle")}>
-          <PanelSectionRow>
-            <Focusable
-              flow-children="horizontal"
-              style={{ display: "flex", justifyContent: "space-between", padding: 0, gap: "8px" }}>
-              <div style={{ flexGrow: 1 }}>
-                <ButtonItem layout="below" onClick={() => Navigation.Navigate("/games")}>
-                  {t("LauncherBtn")}
-                </ButtonItem>
-              </div>
-              <div style={{ padding: "10px 0" }}>
-                <DialogButton
-                  style={{ minWidth: 0 }}
-                  onClick={() => {
-                    localStorage.removeItem("emudecky_gamelist");
-                    Navigation.Navigate("/games");
-                  }}>
-                  <FaArrowRotateRight />
-                </DialogButton>
-              </div>
-            </Focusable>
-          </PanelSectionRow>
-        </PanelSection>
-      ) : (
-        ""
-      )}
       <PanelSection title={t("ControlsTitle")}>
         <PanelSectionRow>
           <ButtonItem
