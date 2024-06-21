@@ -20,5 +20,9 @@
   "UpdateEmusFlatpakBtn": "Flatpakを更新",
   "UpdateEmusAppImageBtn": "AppImageを更新",
   "loadingGames": "データベースを生成しています。しばらくお待ちください",
-  "scrapingWatcherBody": "アートワークをダウンロード中"
+  "scrapingWatcherBody": "アートワークをダウンロード中",
+  "ImportTitle": "Import Games",
+  "ImportButton": "Import using Wifi",
+  "ImportTitle": "ゲームをインポート",
+  "ImportButton": "Wifiを使用してインポート"
 }

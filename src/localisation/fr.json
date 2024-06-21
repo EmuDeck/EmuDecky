@@ -20,5 +20,7 @@
   "UpdateEmusFlatpakBtn": "Mettre à jour les Flatpaks",
   "UpdateEmusAppImageBtn": "Mettre à jour les AppImages",
   "loadingGames": "Génération de la base de données, veuillez patienter",
-  "scrapingWatcherBody": "Téléchargement d'œuvres d'art"
+  "scrapingWatcherBody": "Téléchargement d'œuvres d'art",
+  "ImportTitle": "Importer des jeux",
+  "ImportButton": "Importer via Wifi"
 }

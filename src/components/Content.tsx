@@ -267,8 +267,34 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </ButtonItem>
         </PanelSectionRow>
       </PanelSection>
+      {branch === "early" ||
+      branch === "retail" ||
+      branch === "early-unstable" ||
+      branch === "dev" ||
+      branch === null ? (
+        <PanelSection title={t("ImportTitle")}>
+          <PanelSectionRow>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("ImportTitle"),
+                  exec: `${toolsPath}/server.sh`,
+                })
+              }>
+              {t("ImportButton")}
+            </ButtonItem>
+          </PanelSectionRow>
+        </PanelSection>
+      ) : (
+        ""
+      )}
       <PanelSection title={t("QuickSettingsTitle")}>
-        {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+        {branch === "early" ||
+        branch === "retail" ||
+        branch === "early-unstable" ||
+        branch === "dev" ||
+        branch === null ? (
           <>
             <PanelSectionRow>
               <ToggleField
@@ -367,7 +393,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
-      {branch === "early" || branch === "early-unstable" || branch === "dev" || branch === null ? (
+      {branch === "early" ||
+      branch === "retail" ||
+      branch === "early-unstable" ||
+      branch === "dev" ||
+      branch === null ? (
         <PanelSection title={t("UpdateEmusTitle")}>
           <PanelSectionRow>
             <ButtonItem

@@ -20,5 +20,7 @@
   "UpdateEmusFlatpakBtn": "更新 Flatpak",
   "UpdateEmusAppImageBtn": "更新 AppImage",
   "loadingGames": "正在生成数据库，请耐心等待",
-  "scrapingWatcherBody": "下载艺术品"
+  "scrapingWatcherBody": "下载艺术品",
+  "ImportTitle": "导入游戏",
+  "ImportButton": "使用Wifi导入"
 }
