@@ -22,5 +22,7 @@
   "loadingGames": "Datenbank wird erstellt, bitte gedulden Sie sich",
   "scrapingWatcherBody": "Herunterladen von Kunstwerken",
   "ImportTitle": "Spiele importieren",
-  "ImportButton": "Mit Wifi importieren"
+  "ImportButton": "Mit Wifi importieren",
+  "UploadBtn": "Synchronisation erzwingen - Hochladen",
+  "DownloadBtn": "Synchronisation erzwingen - Herunterladen"
 }

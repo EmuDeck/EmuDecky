@@ -306,6 +306,28 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               />
             </PanelSectionRow>
             <PanelSectionRow>
+              <ButtonItem
+                layout="below"
+                onClick={() =>
+                  launchApp(serverAPI, {
+                    name: t("UploadBtn"),
+                    exec: `${toolsPath}/cloudSync/cloud_sync_force_upload.sh`,
+                  })
+                }>
+                {t("UploadBtn")}
+              </ButtonItem>
+              <ButtonItem
+                layout="below"
+                onClick={() =>
+                  launchApp(serverAPI, {
+                    name: t("DownloadBtn"),
+                    exec: `${toolsPath}/cloudSync/cloud_sync_force_download.sh`,
+                  })
+                }>
+                {t("DownloadBtn")}
+              </ButtonItem>
+            </PanelSectionRow>
+            <PanelSectionRow>
               <ToggleField
                 label="RetroArch local Co-Op"
                 checked={netPlay === "true" ? true : false}

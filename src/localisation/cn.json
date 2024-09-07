@@ -22,5 +22,7 @@
   "loadingGames": "正在生成数据库，请耐心等待",
   "scrapingWatcherBody": "下载艺术品",
   "ImportTitle": "导入游戏",
-  "ImportButton": "使用Wifi导入"
+  "ImportButton": "使用Wifi导入",
+  "UploadBtn": "强制同步 - 上传",
+  "DownloadBtn": "强制同步 - 下载"
 }

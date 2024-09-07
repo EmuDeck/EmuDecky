@@ -22,5 +22,7 @@
   "loadingGames": "Gerando banco de dados, por favor, seja paciente",
   "scrapingWatcherBody": "Baixando obras de arte",
   "ImportTitle": "Importar Jogos",
-  "ImportButton": "Importar usando Wifi"
+  "ImportButton": "Importar usando Wifi",
+  "UploadBtn": "Forçar Sincronização - Enviar",
+  "DownloadBtn": "Forçar Sincronização - Baixar"
 }

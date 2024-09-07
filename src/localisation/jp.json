@@ -24,5 +24,7 @@
   "ImportTitle": "Import Games",
   "ImportButton": "Import using Wifi",
   "ImportTitle": "ゲームをインポート",
-  "ImportButton": "Wifiを使用してインポート"
+  "ImportButton": "Wifiを使用してインポート",
+  "UploadBtn": "強制同期 - アップロード",
+  "DownloadBtn": "強制同期 - ダウンロード"
 }

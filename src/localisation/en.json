@@ -22,5 +22,7 @@
   "loadingGames": "Generating Database, please be patient",
   "scrapingWatcherBody": "Downloading artwork",
   "ImportTitle": "Import Games",
-  "ImportButton": "Import using Wifi"
+  "ImportButton": "Import using Wifi",
+  "UploadBtn": "Force Sync - Upload",
+  "DownloadBtn": "Force Sync - Download"
 }

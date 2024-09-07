@@ -22,5 +22,7 @@
   "loadingGames": "Generando base de datos, por favor sea paciente",
   "scrapingWatcherBody": "Descargando carátulas",
   "ImportTitle": "Importar Juegos",
-  "ImportButton": "Importar usando Wifi"
+  "ImportButton": "Importar usando Wifi",
+  "UploadBtn": "Forzar Sincronización - Subir",
+  "DownloadBtn": "Forzar Sincronización - Descargar"
 }
