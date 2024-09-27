@@ -327,19 +327,19 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
                 {t("DownloadBtn")}
               </ButtonItem>
             </PanelSectionRow>
-            <PanelSectionRow>
-              <ToggleField
-                label="RetroArch local Co-Op"
-                checked={netPlay === "true" ? true : false}
-                layout="below"
-                disabled={updating ? true : false}
-                onChange={() => toggleFunction("netPlay", "pwd")}
-              />
-            </PanelSectionRow>
           </>
         ) : (
           ""
         )}
+        <PanelSectionRow>
+          <ToggleField
+            label="RetroArch local Co-Op"
+            checked={netPlay === "true" ? true : false}
+            layout="below"
+            disabled={updating ? true : false}
+            onChange={() => toggleFunction("netPlay", "pwd")}
+          />
+        </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
             label="AutoSave"
@@ -415,38 +415,30 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
-      {branch === "early" ||
-      branch === "retail" ||
-      branch === "early-unstable" ||
-      branch === "dev" ||
-      branch === null ? (
-        <PanelSection title={t("UpdateEmusTitle")}>
-          <PanelSectionRow>
-            <ButtonItem
-              layout="below"
-              onClick={() =>
-                launchApp(serverAPI, {
-                  name: t("UpdateEmusFlatpakBtn"),
-                  exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
-                })
-              }>
-              {t("UpdateEmusFlatpakBtn")}
-            </ButtonItem>
-            <ButtonItem
-              layout="below"
-              onClick={() =>
-                launchApp(serverAPI, {
-                  name: t("UpdateEmusAppImageBtn"),
-                  exec: `${toolsPath}/binupdate/binupdate.sh`,
-                })
-              }>
-              {t("UpdateEmusAppImageBtn")}
-            </ButtonItem>
-          </PanelSectionRow>
-        </PanelSection>
-      ) : (
-        ""
-      )}
+      <PanelSection title={t("UpdateEmusTitle")}>
+        <PanelSectionRow>
+          <ButtonItem
+            layout="below"
+            onClick={() =>
+              launchApp(serverAPI, {
+                name: t("UpdateEmusFlatpakBtn"),
+                exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
+              })
+            }>
+            {t("UpdateEmusFlatpakBtn")}
+          </ButtonItem>
+          <ButtonItem
+            layout="below"
+            onClick={() =>
+              launchApp(serverAPI, {
+                name: t("UpdateEmusAppImageBtn"),
+                exec: `${toolsPath}/binupdate/binupdate.sh`,
+              })
+            }>
+            {t("UpdateEmusAppImageBtn")}
+          </ButtonItem>
+        </PanelSectionRow>
+      </PanelSection>
     </>
   ); // Return;
 };
