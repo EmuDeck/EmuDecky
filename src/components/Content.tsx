@@ -51,9 +51,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       arSega: undefined,
       arSnes: undefined,
       branch: null,
+      systemOS: "",
       toolsPath: undefined,
     },
     updating: false,
+    msg: "",
   });
 
   const getData = async (update: Boolean) => {
@@ -62,10 +64,39 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
       const emuDeckConfig: any = JSON.parse(result);
       if (update) {
-        setState({ ...state, serverAPI, emuDeckConfig, updating: false });
+        setState({ ...state, serverAPI, emuDeckConfig, updating: false, msg: msg });
       } else {
-        setState({ ...state, serverAPI, emuDeckConfig });
+        setState({ ...state, serverAPI, emuDeckConfig, msg: msg });
       }
+    });
+  };
+
+  const forceUpload = async (name: string) => {
+    let command;
+    if (systemOS == "nt") {
+      command =
+        'PowerShell -ExecutionPolicy Bypass -Command "& {. "$env:APPDATAEmuDeck\backend\functions/all.ps1"; cloud_sync_uploadEmuAll}"';
+    } else {
+      command = `${toolsPath}/cloudSync/cloud_sync_force_upload.sh`;
+    }
+
+    launchApp(serverAPI, {
+      name: name,
+      exec: command,
+    });
+  };
+
+  const forceDownload = async (name: string) => {
+    let command;
+    if (systemOS == "nt") {
+      command =
+        'PowerShell -ExecutionPolicy Bypass -Command "& {. "$env:APPDATAEmuDeck\backend\functions/all.ps1"; cloud_sync_downloadEmuAll}"';
+    } else {
+      command = `${toolsPath}/cloudSync/cloud_sync_force_download.sh`;
+    }
+    launchApp(serverAPI, {
+      name: name,
+      exec: command,
     });
   };
 
@@ -74,7 +105,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       getData(false);
     }
   }, [state]);
-  const { emuDeckConfig, updating } = state;
+  const { emuDeckConfig, updating, msg } = state;
   const {
     cloud_sync_status,
     netPlay,
@@ -88,8 +119,14 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     arSega,
     arSnes,
     branch,
+    systemOS,
     toolsPath,
   } = emuDeckConfig;
+
+  let separator = "&&";
+  if (systemOS === "nt") {
+    separator = ";";
+  }
 
   const listsega = [
     {
@@ -168,14 +205,22 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       }),
     } as MultiDropdownOption;
   }
+
   //Toggles function
   const toggleFunction = (configNameValue: string, emuDeckCommand: string) => {
-    setState({ ...state, updating: true });
-
     const itemValue = emuDeckConfig[configNameValue];
     const newValue = itemValue === "true" ? "false" : "true";
+
+    setState({
+      ...state,
+      updating: true,
+      msg: `setSetting ${configNameValue} "${newValue}" ${separator} ${emuDeckCommand}`,
+    });
+
     serverAPI
-      .callPluginMethod("emudeck", { command: `setSetting ${configNameValue} ${newValue} && ${emuDeckCommand}` })
+      .callPluginMethod("emudeck", {
+        command: `setSetting ${configNameValue} "${newValue}" ${separator} ${emuDeckCommand}`,
+      })
       .then((response: any) => {
         const result: any = response.result;
         console.log({ result });
@@ -188,7 +233,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
 
     const newValue = label.replace(":", "");
     serverAPI
-      .callPluginMethod("emudeck", { command: `setSetting ${config} ${newValue} && ${data}` })
+      .callPluginMethod("emudeck", { command: `setSetting ${config} ${newValue} ${separator} ${data}` })
       .then((response: any) => {
         const result: any = response.result;
         console.log({ result });
@@ -267,11 +312,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           </ButtonItem>
         </PanelSectionRow>
       </PanelSection>
-      {branch === "early" ||
-      branch === "retail" ||
-      branch === "early-unstable" ||
-      branch === "dev" ||
-      branch === null ? (
+      {(branch === "early" && systemOS !== "nt") ||
+      (branch === "retail" && systemOS !== "nt") ||
+      (branch === "early-unstable" && systemOS !== "nt") ||
+      (branch === "dev" && systemOS !== "nt") ||
+      (branch === null && systemOS !== "nt") ? (
         <PanelSection title={t("ImportTitle")}>
           <PanelSectionRow>
             <ButtonItem
@@ -290,11 +335,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         ""
       )}
       <PanelSection title={t("QuickSettingsTitle")}>
-        {branch === "early" ||
-        branch === "retail" ||
-        branch === "early-unstable" ||
-        branch === "dev" ||
-        branch === null ? (
+        {(branch === "early" && systemOS !== "nt") ||
+        (branch === "retail" && systemOS !== "nt") ||
+        (branch === "early-unstable" && systemOS !== "nt") ||
+        (branch === "dev" && systemOS !== "nt") ||
+        (branch === null && systemOS !== "nt") ? (
           <>
             <PanelSectionRow>
               <ToggleField
@@ -306,24 +351,10 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               />
             </PanelSectionRow>
             <PanelSectionRow>
-              <ButtonItem
-                layout="below"
-                onClick={() =>
-                  launchApp(serverAPI, {
-                    name: t("UploadBtn"),
-                    exec: `${toolsPath}/cloudSync/cloud_sync_force_upload.sh`,
-                  })
-                }>
+              <ButtonItem layout="below" onClick={() => forceUpload(t("UploadBtn"))}>
                 {t("UploadBtn")}
               </ButtonItem>
-              <ButtonItem
-                layout="below"
-                onClick={() =>
-                  launchApp(serverAPI, {
-                    name: t("DownloadBtn"),
-                    exec: `${toolsPath}/cloudSync/cloud_sync_force_download.sh`,
-                  })
-                }>
+              <ButtonItem layout="below" onClick={() => forceDownload(t("DownloadBtn"))}>
                 {t("DownloadBtn")}
               </ButtonItem>
             </PanelSectionRow>
@@ -331,15 +362,17 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         ) : (
           ""
         )}
-        <PanelSectionRow>
-          <ToggleField
-            label="RetroArch local Co-Op"
-            checked={netPlay === "true" ? true : false}
-            layout="below"
-            disabled={updating ? true : false}
-            onChange={() => toggleFunction("netPlay", "pwd")}
-          />
-        </PanelSectionRow>
+        {systemOS != "nt" && (
+          <PanelSectionRow>
+            <ToggleField
+              label="RetroArch local Co-Op"
+              checked={netPlay === "true" ? true : false}
+              layout="below"
+              disabled={updating ? true : false}
+              onChange={() => toggleFunction("netPlay", "pwd")}
+            />
+          </PanelSectionRow>
+        )}
         <PanelSectionRow>
           <ToggleField
             label="AutoSave"
@@ -415,30 +448,32 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           />
         </PanelSectionRow>
       </PanelSection>
-      <PanelSection title={t("UpdateEmusTitle")}>
-        <PanelSectionRow>
-          <ButtonItem
-            layout="below"
-            onClick={() =>
-              launchApp(serverAPI, {
-                name: t("UpdateEmusFlatpakBtn"),
-                exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
-              })
-            }>
-            {t("UpdateEmusFlatpakBtn")}
-          </ButtonItem>
-          <ButtonItem
-            layout="below"
-            onClick={() =>
-              launchApp(serverAPI, {
-                name: t("UpdateEmusAppImageBtn"),
-                exec: `${toolsPath}/binupdate/binupdate.sh`,
-              })
-            }>
-            {t("UpdateEmusAppImageBtn")}
-          </ButtonItem>
-        </PanelSectionRow>
-      </PanelSection>
+      {systemOS != "nt" && (
+        <PanelSection title={t("UpdateEmusTitle")}>
+          <PanelSectionRow>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusFlatpakBtn"),
+                  exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusFlatpakBtn")}
+            </ButtonItem>
+            <ButtonItem
+              layout="below"
+              onClick={() =>
+                launchApp(serverAPI, {
+                  name: t("UpdateEmusAppImageBtn"),
+                  exec: `${toolsPath}/binupdate/binupdate.sh`,
+                })
+              }>
+              {t("UpdateEmusAppImageBtn")}
+            </ButtonItem>
+          </PanelSectionRow>
+        </PanelSection>
+      )}
     </>
   ); // Return;
 };
