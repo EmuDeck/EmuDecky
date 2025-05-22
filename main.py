@@ -75,7 +75,7 @@ class Plugin:
         if os.name == 'nt':
             config_file_path = os.path.join(user_home, 'emudeck', 'settings.ps1')
         else:
-            config_file_path = os.path.join(user_home, 'emudeck', 'settings.sh')
+            config_file_path = os.path.join(user_home, '.config/EmuDeck', 'settings.sh')
         configuration = {}
 
         with open(config_file_path, 'r') as file:
