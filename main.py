@@ -4,10 +4,20 @@ import re
 from glob import glob
 import decky_plugin
 from pathlib import Path
+from types import SimpleNamespace
+
+def log(txt):
+    decky_plugin.logger.info(txt)
+
+def warn(txt):
+    decky_plugin.logger.warn(txt)
+
+
+def error(txt):
+    decky_plugin.logger.error(txt)
 
 # Directorio de configuración del plugin
 confdir = os.environ["DECKY_PLUGIN_SETTINGS_DIR"]
-mode = "LEGACY" #Bash or python?
 
 system = platform.system().lower()  # 'linux', 'darwin', 'windows'
 home = Path.home()
@@ -32,29 +42,15 @@ if system.startswith("win"):
     pegasus_folder=Path(os.path.expandvars(emudeck_folder / "Pegasus"))
 
 class Plugin:
+
     async def emudeck(self, command):
 
-        # Determinar el comando según el sistema operativo
         if os.name == 'nt':
-            # Obtener la ruta completa del script .ps1 usando Python
-            ps1_file = os.path.join(os.environ['APPDATA'], 'EmuDeck', 'backend', 'functions', 'all.ps1')
-
-            # Construir el comando de PowerShell con la ruta absoluta
-            bash_command = fr'PowerShell -ExecutionPolicy Bypass -Command "& {{. \"{ps1_file}\"; {command}}}"'
+            bash_command = f"python {emudeck_backend}/api.py {command}"
         else:
-            # Para sistemas basados en Unix
-            bash_command = f". $HOME/.config/EmuDeck/backend/functions/all.sh && {command}"
+            bash_command = f"python3 {emudeck_backend}/api.py {command}"
 
-
-        if mode == "CURRENT":
-
-            if "setSetting" in command:
-                command = command.split("&&", 1)[1]
-
-            if os.name == 'nt':
-                bash_command = f"python {emudeck_backend}/api.py {command}"
-            else:
-                bash_command = f"python3 {emudeck_backend}/api.py {command}"
+        log(bash_command)
 
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
@@ -96,66 +92,40 @@ class Plugin:
         result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         branch = result.stdout.strip()
 
+        json_settings_path = Path(emudeck_folder) / "settings.json"
+        if json_settings_path.exists():
+            with open(json_settings_path, encoding='utf-8') as jf:
+                json_configuration=SimpleNamespace()
+                # Aquí json.load lee y va aplicando object_hook a cada dict
+                settings = json.load(jf, object_hook=lambda d: SimpleNamespace(**d))
 
-        if mode == "LEGACY":
-            pattern = re.compile(r'([A-Za-z_][A-Za-z0-9_]*)=(.*)')
-            user_home = os.path.expanduser("~")
-            if os.name == 'nt':
-                config_file_path = os.path.join(user_home, 'emudeck', 'settings.ps1')
-            else:
-                config_file_path = os.path.join(user_home, '.config/EmuDeck', 'settings.sh')
-            configuration = {}
+                installationPath=settings.storagePath
+                tools_path=Path(os.path.expandvars(installationPath+"/Emulation/tools"))
+                if hasattr(settings, "cloud_sync_status"):
+                    json_configuration.cloud_sync_status = settings.cloud_sync_status
+                else:
+                    json_configuration.cloud_sync_status = False
 
-            with open(config_file_path, 'r') as file:
-                for line in file:
-                    match = pattern.search(line)
-                    if match:
-                        variable = match.group(1)
-                        value = match.group(2).strip('"')
-                        configuration[variable] = value
-
-            configuration["systemOS"] = os.name
-            configuration["branch"] = branch
-
-            json_configuration = json.dumps(configuration, indent=4)
-            return json_configuration
-        else:
-
-            json_settings_path = Path(emudeck_folder) / "settings.json"
-            if json_settings_path.exists():
-                with open(json_settings_path, encoding='utf-8') as jf:
-                    # Aquí json.load lee y va aplicando object_hook a cada dict
-                    settings = json.load(jf, object_hook=lambda d: SimpleNamespace(**d))
-
-                    installationPath=settings.storagePath
-                    tools_path=Path(os.path.expandvars(installationPath+"/Emulation/tools"))
-
-                    json_configuration.cloud_sync_status = settings.installEmus
+                if hasattr(settings, "netPlay"):
                     json_configuration.netPlay = settings.netPlay
-                    json_configuration.RABezels = settings.bezels
-                    json_configuration.RAHandClassic2D = settings.shaders.classic
-                    json_configuration.RAHandClassic3D = settings.shaders.classic3d
-                    json_configuration.RAHandHeldShader = settings.shaders.handhelds
-                    json_configuration.RAautoSave = settings.autosave
-                    json_configuration.arClassic3D = settings.ar.classic3d
-                    json_configuration.arDolphin = settings.ar.dolphin
-                    json_configuration.arSega = settings.ar.sega
-                    json_configuration.arSnes = settings.ar.snes
-                    json_configuration.branch = branch
-                    json_configuration.systemOS = os.name
-                    json_configuration.toolsPath = tools_path
-                    return json_configuration
+                else:
+                    json_configuration.netPlay = False
+
+                json_configuration.RABezels = settings.bezels
+                json_configuration.RAHandClassic2D = settings.shaders.classic
+                json_configuration.RAHandClassic3D = settings.shaders.classic3d
+                json_configuration.RAHandHeldShader = settings.shaders.handhelds
+                json_configuration.RAautoSave = settings.autosave
+                json_configuration.arClassic3D = settings.ar.classic3d
+                json_configuration.arDolphin = settings.ar.dolphin
+                json_configuration.arSega = settings.ar.sega
+                json_configuration.arSnes = settings.ar.snes
+                json_configuration.branch = branch
+                json_configuration.systemOS = os.name
+                json_configuration.toolsPath = str(tools_path)
+                return json.dumps(json_configuration.__dict__, indent=4)
 
     async def _main(self):
-        file_path = Path("$HOME/.config/EmuDeck/backend/functions/appImageInit.sh")
-        if os.name == 'nt':
-            file_path = Path(f"{appdata_roaming}/EmuDeck/backend/functions/all.ps1")
-
-        if file_path.exists():
-            mode = "LEGACY"
-        else:
-            mode = "CURRENT"
-
         if os.name == 'nt':
             bash_command = f"cd {appdata_roaming}/EmuDeck/backend/ && git reset --hard && git pull"
         else:

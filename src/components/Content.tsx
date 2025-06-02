@@ -62,7 +62,8 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     await serverAPI.callPluginMethod("getSettings", {}).then((response: any) => {
       const result: any = response.result;
 
-      const emuDeckConfig: any = JSON.parse(result);
+      let emuDeckConfig: any = JSON.parse(result);
+      console.log(emuDeckConfig);
       if (update) {
         setState({ ...state, serverAPI, emuDeckConfig, updating: false, msg: msg });
       } else {
@@ -104,6 +105,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     if (state.emuDeckConfig.cloud_sync_status === undefined) {
       getData(false);
     }
+    console.log({ state });
   }, [state]);
   const { emuDeckConfig, updating, msg } = state;
   const {
@@ -123,60 +125,55 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
     toolsPath,
   } = emuDeckConfig;
 
-  let separator = "&&";
-  if (systemOS === "nt") {
-    separator = ";";
-  }
-
   const listsega = [
     {
       value: "4:3",
-      command: "RetroArch_setCustomizations",
+      command: "decky_set_ar_sega",
       setting: "arSega",
     },
     {
       value: "3:2",
-      command: "RetroArch_setCustomizations",
+      command: "decky_set_ar_sega",
       setting: "arSega",
     },
   ];
   const listnintendo = [
     {
       value: "4:3",
-      command: "RetroArch_setCustomizations",
+      command: "decky_set_ar_nintendo",
       setting: "arSnes",
     },
     {
       value: "8:7",
-      command: "RetroArch_setCustomizations",
+      command: "decky_set_ar_nintendo",
       setting: "arSnes",
     },
   ];
   const listretro3D = [
     {
       value: "4:3",
-      command: "Decky_setAR",
+      command: "decky_set_ar_3d",
       setting: "arClassic3d",
     },
     {
       value: "16:9",
-      command: "Decky_setAR",
+      command: "decky_set_ar_3d",
       setting: "arClassic3d",
     },
   ];
   const listgc = [
     {
       value: "4:3",
-      command: "Dolphin_setCustomizations",
+      command: "decky_set_ar_dolphin",
       setting: "arDolphin",
     },
     {
       value: "16:9",
-      command: "Dolphin_setCustomizations",
+      command: "decky_set_ar_dolphin",
       setting: "arDolphin",
     },
   ];
-  const getAR = (system: string) => {
+  const getAR = (system: any) => {
     switch (system) {
       case "169":
         return "16:9";
@@ -185,6 +182,14 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       case "87":
         return "8:7";
       case "32":
+        return "3:2";
+      case 169:
+        return "16:9";
+      case 43:
+        return "4:3";
+      case 87:
+        return "8:7";
+      case 32:
         return "3:2";
       default:
         return "N/A";
@@ -207,19 +212,15 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   }
 
   //Toggles function
-  const toggleFunction = (configNameValue: string, emuDeckCommand: string) => {
-    const itemValue = emuDeckConfig[configNameValue];
-    const newValue = itemValue === "true" ? "false" : "true";
-
+  const toggleFunction = (emuDeckCommand: string) => {
     setState({
       ...state,
       updating: true,
-      msg: `setSetting ${configNameValue} "${newValue}" ${separator} ${emuDeckCommand}`,
+      msg: `${emuDeckCommand}`,
     });
-
     serverAPI
       .callPluginMethod("emudeck", {
-        command: `setSetting ${configNameValue} "${newValue}" ${separator} ${emuDeckCommand}`,
+        command: `${emuDeckCommand}`,
       })
       .then((response: any) => {
         const result: any = response.result;
@@ -229,15 +230,13 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   };
   //Dropdown function
   const setFunction = (incoming: any) => {
-    const { config, data, label } = incoming;
-
+    const { data, label } = incoming;
+    console.log({ incoming });
     const newValue = label.replace(":", "");
-    serverAPI
-      .callPluginMethod("emudeck", { command: `setSetting ${config} ${newValue} ${separator} ${data}` })
-      .then((response: any) => {
-        const result: any = response.result;
-        console.log({ result });
-      });
+    serverAPI.callPluginMethod("emudeck", { command: `${data} ${newValue}` }).then((response: any) => {
+      const result: any = response.result;
+      console.log({ result });
+    });
   };
 
   return (
@@ -315,6 +314,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       {(branch === "early" && systemOS !== "nt") ||
       (branch === "retail" && systemOS !== "nt") ||
       (branch === "early-unstable" && systemOS !== "nt") ||
+      (branch === "early-unstable-py" && systemOS !== "nt") ||
       (branch === "dev" && systemOS !== "nt") ||
       (branch === null && systemOS !== "nt") ? (
         <PanelSection title={t("ImportTitle")}>
@@ -338,16 +338,17 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
         {(branch === "early" && systemOS !== "nt") ||
         (branch === "retail" && systemOS !== "nt") ||
         (branch === "early-unstable" && systemOS !== "nt") ||
+        (branch === "early-unstable-py" && systemOS !== "nt") ||
         (branch === "dev" && systemOS !== "nt") ||
         (branch === null && systemOS !== "nt") ? (
           <>
             <PanelSectionRow>
               <ToggleField
                 label="CloudSync"
-                checked={cloud_sync_status === "true" ? true : false}
+                checked={cloud_sync_status == true ? true : false}
                 layout="below"
                 disabled={updating ? true : false}
-                onChange={() => toggleFunction("cloud_sync_status", "pwd")}
+                onChange={() => toggleFunction("decky_cloud_sync_status")}
               />
             </PanelSectionRow>
             <PanelSectionRow>
@@ -366,56 +367,56 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
           <PanelSectionRow>
             <ToggleField
               label="RetroArch local Co-Op"
-              checked={netPlay === "true" ? true : false}
+              checked={netPlay == true ? true : false}
               layout="below"
               disabled={updating ? true : false}
-              onChange={() => toggleFunction("netPlay", "pwd")}
+              onChange={() => toggleFunction("decky_netplay")}
             />
           </PanelSectionRow>
         )}
         <PanelSectionRow>
           <ToggleField
             label="AutoSave"
-            checked={RAautoSave === "true" ? true : false}
+            checked={RAautoSave == true ? true : false}
             layout="below"
             disabled={updating ? true : false}
-            onChange={() => toggleFunction("RAautoSave", "Decky_autoSave")}
+            onChange={() => toggleFunction("decky_autoSave")}
           />
         </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
             label={t("Bezels")}
-            checked={RABezels === "true" ? true : false}
+            checked={RABezels == true ? true : false}
             layout="below"
             disabled={updating ? true : false}
-            onChange={() => toggleFunction("RABezels", "Decky_bezels")}
+            onChange={() => toggleFunction("decky_bezels")}
           />
         </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
             label={t("LCDShader")}
-            checked={RAHandHeldShader === "true" ? true : false}
+            checked={RAHandHeldShader == true ? true : false}
             layout="below"
             disabled={updating ? true : false}
-            onChange={() => toggleFunction("RAHandHeldShader", "Decky_shaders_LCD")}
+            onChange={() => toggleFunction("decky_shaders_LCD")}
           />
         </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
             label={t("CRTShader2D")}
-            checked={RAHandClassic2D === "true" ? true : false}
+            checked={RAHandClassic2D == true ? true : false}
             layout="below"
             disabled={updating ? true : false}
-            onChange={() => toggleFunction("RAHandClassic2D", "Decky_shaders_2D")}
+            onChange={() => toggleFunction("decky_shaders_2D")}
           />
         </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
             label={t("CRTShader3D")}
-            checked={RAHandClassic3D === "true" ? true : false}
+            checked={RAHandClassic3D == true ? true : false}
             layout="below"
             disabled={updating ? true : false}
-            onChange={() => toggleFunction("RAHandClassic3D", "Decky_shaders_3D")}
+            onChange={() => toggleFunction("decky_shaders_3D")}
           />
         </PanelSectionRow>
       </PanelSection>
@@ -455,21 +456,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
               layout="below"
               onClick={() =>
                 launchApp(serverAPI, {
-                  name: t("UpdateEmusFlatpakBtn"),
-                  exec: `${toolsPath}/flatpakupdate/flatpakupdate.sh`,
+                  name: t("UpdateEmusTitle"),
+                  exec: `${toolsPath}/wrappers/update-emulators.sh`,
                 })
               }>
-              {t("UpdateEmusFlatpakBtn")}
-            </ButtonItem>
-            <ButtonItem
-              layout="below"
-              onClick={() =>
-                launchApp(serverAPI, {
-                  name: t("UpdateEmusAppImageBtn"),
-                  exec: `${toolsPath}/binupdate/binupdate.sh`,
-                })
-              }>
-              {t("UpdateEmusAppImageBtn")}
+              {t("UpdateEmusTitle")}
             </ButtonItem>
           </PanelSectionRow>
         </PanelSection>
