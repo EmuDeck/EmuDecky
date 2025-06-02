@@ -78,7 +78,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       command =
         'PowerShell -ExecutionPolicy Bypass -Command "& {. "$env:APPDATAEmuDeck\backend\functions/all.ps1"; cloud_sync_uploadEmuAll}"';
     } else {
-      command = `${toolsPath}/cloudSync/cloud_sync_force_upload.sh`;
+      command = `${toolsPath}/wrappers/cloud_sync_force_upload.sh`;
     }
 
     launchApp(serverAPI, {
@@ -93,7 +93,7 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
       command =
         'PowerShell -ExecutionPolicy Bypass -Command "& {. "$env:APPDATAEmuDeck\backend\functions/all.ps1"; cloud_sync_downloadEmuAll}"';
     } else {
-      command = `${toolsPath}/cloudSync/cloud_sync_force_download.sh`;
+      command = `${toolsPath}/wrappers/cloud_sync_force_download.sh`;
     }
     launchApp(serverAPI, {
       name: name,
