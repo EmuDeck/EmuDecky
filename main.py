@@ -87,10 +87,16 @@ class Plugin:
 
         if os.name == 'nt':
             bash_command = f"cd {appdata_roaming}/EmuDeck/backend/ && git rev-parse --abbrev-ref HEAD"
+            result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            branch = result.stdout.strip()
         else:
-            bash_command = "cd $HOME/.config/EmuDeck/backend/ && git rev-parse --abbrev-ref HEAD"
-        result = subprocess.run(bash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        branch = result.stdout.strip()
+            head_path = home / ".config/EmuDeck/backend/.git/HEAD"
+            with open(head_path, "r") as f:
+                ref = f.read().strip()
+            if ref.startswith("ref:"):
+                branch = ref.split("/")[-1]
+            else:
+                branch = ref  # commit hash si está en detached HEAD
 
         json_settings_path = Path(emudeck_folder) / "settings.json"
         if json_settings_path.exists():
